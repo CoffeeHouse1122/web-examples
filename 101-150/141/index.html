@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>cropperjs裁剪及下载图片</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css"
+    />
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --body-color: #025bee;
+        --primary-back-color: #ffffff;
+      }
+
+      body {
+        background-color: var(--body-color);
+      }
+
+      img {
+        display: block;
+        max-width: 100%;
+      }
+
+      .wrapper {
+        width: min(90%, 800px);
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        top: 1em;
+        background-color: var(--primary-back-color);
+        padding: 2em 3em;
+        border-radius: 0.5em;
+      }
+
+      .container {
+        background-color: orange;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 340px));
+        gap: 1em;
+        border-radius: 7px;
+      }
+      .container .image-container,
+      .container .preview-container {
+        width: 100%;
+      }
+
+      input[type="file"] {
+        display: none;
+      }
+      label {
+        display: block;
+        position: relative;
+        background-color: var(--body-color);
+        border-radius: 0.3em;
+        color: var(--primary-back-color);
+        font-size: 16px;
+        text-align: center;
+        padding-block: 16px;
+        margin-block: 16px;
+        cursor: pointer;
+      }
+
+      .options {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 1em;
+      }
+      input[type="number"] {
+        width: 100px;
+        padding: 16px 5px;
+        border-radius: 0.3em;
+        border: 2px solid #000000;
+      }
+      button {
+        padding: 1em;
+        border-radius: 0.3em;
+        border: 2px solid var(--body-color);
+        background-color: var(--primary-back-color);
+        color: var(--body-color);
+        cursor: pointer;
+      }
+
+      .btns {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 1em;
+        margin-top: 1em;
+      }
+      .btns button {
+        font-size: 1em;
+      }
+      .btns a {
+        border: 2px solid var(--body-color);
+        background-color: var(--body-color);
+        border-radius: 0.3em;
+        color: var(--primary-back-color);
+        text-decoration: none;
+        padding: 1em;
+        font-size: 1em;
+      }
+
+      .hide {
+        display: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="wrapper">
+      <div class="container">
+        <div class="image-container">
+          <img id="image" />
+        </div>
+
+        <div class="preview-container">
+          <img id="preview-image" />
+        </div>
+      </div>
+
+      <input type="file" id="file" accept="image/*" />
+      <label for="file">Choose A Photo</label>
+
+      <div class="options hide">
+        <input
+          type="number"
+          id="width-input"
+          placeholder="Enter Wiedth"
+          max="780"
+        />
+
+        <input
+          type="number"
+          id="height-input"
+          placeholder="Enter Height"
+          max="780"
+        />
+
+        <button class="aspect-ratio-button">16:9</button>
+        <button class="aspect-ratio-button">4:3</button>
+        <button class="aspect-ratio-button">1:1</button>
+        <button class="aspect-ratio-button">2:3</button>
+        <button class="aspect-ratio-button">Free</button>
+      </div>
+
+      <div class="btns">
+        <button id="preview" class="hide">Preview</button>
+
+        <a href="" id="download" class="hide">Download</a>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+    <script>
+      const image = document.getElementById("image"),
+        preImage = document.getElementById("preview-image"),
+        previewBtn = document.getElementById("preview"),
+        downloadBtn = document.getElementById("download"),
+        fileInput = document.getElementById("file"),
+        options = document.querySelector(".options"),
+        widthInput = document.getElementById("width-input"),
+        heightInput = document.getElementById("height-input"),
+        aspectRatios = document.querySelectorAll(".aspect-ratio-button");
+
+      let cropper = "",
+        fileName = "";
+
+      fileInput.onchange = () => {
+        preImage.src = "";
+        widthInput.value = 0;
+        heightInput.value = 0;
+        downloadBtn.classList.add("hide");
+
+        const file = fileInput.files[0];
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+          image.setAttribute("src", reader.result);
+
+          if (cropper) cropper.destroy();
+          cropper = new Cropper(image);
+
+          previewBtn.classList.remove("hide");
+          options.classList.remove("hide");
+        };
+
+        fileName = file.name.split(".")[0];
+      };
+
+      previewBtn.onclick = (e) => {
+        e.preventDefault();
+        downloadBtn.classList.remove("hide");
+
+        const imgSrc = cropper.getCroppedCanvas().toDataURL();
+        preImage.src = imgSrc;
+
+        downloadBtn.setAttribute("href", imgSrc);
+        downloadBtn.download = `cropped_${fileName}`;
+      };
+
+      widthInput.addEventListener("input", () => {
+        const { width } = cropper.getImageData();
+        let eleWidth = parseInt(widthInput.value);
+
+        if (eleWidth > width) {
+          eleWidth = width;
+        }
+
+        cropper.setCropBoxData({
+          width: eleWidth,
+        });
+      });
+
+      heightInput.addEventListener("input", () => {
+        const { height } = cropper.getImageData();
+        let eleHeight = parseInt(heightInput.value);
+
+        if (eleHeight > height) {
+          eleHeight = height;
+        }
+
+        cropper.setCropBoxData({
+          height: eleHeight,
+        });
+      });
+
+      aspectRatios.forEach((ratioEle) => {
+        ratioEle.onclick = () => {
+          if (ratioEle.innerText === "Free") {
+            cropper.setAspectRatio(NaN);
+          } else {
+            cropper.setAspectRatio(
+              evaluate(ratioEle.innerText.replace(":", "/"))
+            );
+          }
+        };
+      });
+
+      function evaluate(str) {
+        return Function(`return (${str})`)();
+      }
+
+    </script>
+  </body>
+</html>

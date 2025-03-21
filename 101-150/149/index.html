@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Animated Grid</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Anta&display=swap");
+      * {
+        box-sizing: border-box;
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+        scroll-behavior: smooth;
+      }
+      html,
+      body {
+        height: 100%;
+        overflow: hidden;
+      }
+
+      body {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+        background: #1e1e1e
+          repeating-linear-gradient(
+            34deg,
+            #4442 0px,
+            #4442 4px,
+            transparent 4px,
+            transparent 8px
+          );
+        font-family: "Anta", sans-serif;
+      }
+
+      .grid::before,
+      .grid::after {
+        content: "";
+        display: block;
+        position: absolute;
+        width: 100vw;
+        height: 100vh;
+
+        --line-sz: 2vh;
+        --line-thickness: 2px;
+        --fct: 1/12;
+        --line-clr: #555;
+        --at: 2s;
+
+        --xsz: 100vh;
+        --ysz: 100vh;
+        --ox: calc(-0.45 * var(--line-sz));
+        --oy: calc(0.54 * var(--line-sz));
+
+        box-shadow: inset 0 0 calc(min(100vw, 100vh) * 0.04)
+          calc(min(100vw, 100vh) * 0.11) #000;
+        border-radius: min(20vw, 20vh);
+        z-index: -1;
+      }
+
+      @media (max-height: 600px) {
+        .grid::before,
+        .grid::after {
+          --line-sz: 3vh;
+          --fct: 1/8;
+        }
+      }
+      @media (max-height: 400px) {
+        .grid::before,
+        .grid::after {
+          --fct: 1/6;
+        }
+      }
+      .grid::before {
+        background: calc(0em + var(--ox)) 0
+            repeating-linear-gradient(
+              90deg,
+              transparent 0,
+              transparent var(--line-sz),
+              #000 var(--line-sz),
+              #000 calc(var(--xsz) * var(--fct))
+            ),
+          calc(0em + var(--ox)) 0
+            repeating-linear-gradient(
+              var(--line-clr) 0,
+              var(--line-clr) var(--line-thickness),
+              #000 var(--line-thickness),
+              #000 calc(var(--xsz) * var(--fct))
+            );
+        mix-blend-mode: lighten;
+        animation: lr var(--at) ease-in-out infinite;
+      }
+      .grid.test::before {
+        animation: none;
+      }
+      @keyframes lr {
+        0% {
+          background-position: calc(0em + var(--ox)) 0;
+        }
+        50% {
+          background-position: calc((var(--xsz) * var(--fct)) + var(--ox)) 0;
+        }
+        100% {
+          background-position: calc((var(--xsz) * var(--fct)) + var(--ox)) 0;
+        }
+      }
+
+      .grid::after {
+        background: 0 calc(0em + var(--oy))
+            repeating-linear-gradient(
+              0deg,
+              transparent 0,
+              transparent var(--line-sz),
+              #000 var(--line-sz),
+              #000 calc(var(--ysz) * var(--fct))
+            ),
+          0 calc(0em + var(--oy))
+            repeating-linear-gradient(
+              90deg,
+              var(--line-clr) 0,
+              var(--line-clr) var(--line-thickness),
+              #000 var(--line-thickness),
+              #000 calc(var(--ysz) * var(--fct))
+            );
+        mix-blend-mode: lighten;
+        animation: td var(--at) ease-in-out infinite;
+      }
+      .grid.test::after {
+        animation: none;
+      }
+      @keyframes td {
+        0% {
+          background-position: 0 calc(0em + var(--oy));
+        }
+        50% {
+          background-position: 0 calc((var(--ysz) * var(--fct)) + var(--oy));
+        }
+        100% {
+          background-position: 0 calc((var(--ysz) * var(--fct)) + var(--oy));
+        }
+      }
+
+      .title {
+        width: 300px;
+        height: 200px;
+        color: #fff1;
+        text-shadow: 3px 3px 3px #0002;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 54px;
+        text-transform: uppercase;
+        font-weight: 1000;
+        user-select: none;
+      }
+      span {
+        color: #fff2;
+      }
+    </style>
+  </head>
+  <body>
+    <body class="grid" onclick="this.classList.toggle('test');">
+      <div class="title">Animated<br />Grid</div>
+      <span>(click to pause/play)</span>
+    </body>
+  </body>
+</html>

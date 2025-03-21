@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>创意交互按钮</title>
+    <style>
+      a {
+        display: block;
+        text-decoration: none;
+        font-family: "Coiny", system-ui;
+      }
+      a:hover {
+        animation: bounce ease 1s;
+      }
+      .button--A,
+      .button--B,
+      .button--C,
+      .button--D {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 240px;
+        height: 72px;
+        font-size: 32px;
+
+        /* 使用しているCoinyというフォントのベースラインが少し上にズレてしまうのでpadding-topで調整しています。（本来はいらないスタイリングです） */
+        padding-top: 8px;
+        box-sizing: border-box;
+      }
+      .button--A {
+        border-radius: 36px;
+        color: #dced6b;
+        background: linear-gradient(-30deg, #f2ff8c, #fff);
+        box-shadow: 0 0 20px rgba(150, 170, 180, 0.3), 0 0 20px #d4e36f inset;
+      }
+      .button--B {
+        border-radius: 20px;
+        color: #ff80a8;
+        background: linear-gradient(-30deg, #ff96b7, #ffe6ed);
+        box-shadow: 0 0 20px rgba(150, 170, 180, 0.3), 0 0 20px #ff80a8 inset;
+      }
+      .button--C {
+        border-radius: 36px;
+        color: #3fa4db;
+        background: linear-gradient(-30deg, #71ccff, #cfeeff);
+        box-shadow: 0 0 20px rgba(150, 170, 180, 0.3), 0 0 20px #46b5f2 inset;
+      }
+      .button--D {
+        border-radius: 20px;
+        color: #59e69f;
+        background: linear-gradient(-30deg, #8dffc6, #e3fff1);
+        box-shadow: 0 0 20px rgba(150, 170, 180, 0.3), 0 0 20px #5ef2a8 inset;
+      }
+      .button--E,
+      .button--F,
+      .button--G,
+      .button--H {
+        width: 72px;
+        height: 72px;
+      }
+      .button--E {
+        border-radius: 50%;
+        background: linear-gradient(-30deg, #ffca61, #fff0bd);
+        box-shadow: 0 0 20px rgba(150, 170, 180, 0.3), 0 0 20px #f7bb43 inset;
+      }
+      .button--F {
+        border-radius: 20px;
+        background: linear-gradient(-30deg, #fcbfff, #fbe6ff);
+        box-shadow: 0 0 20px rgba(150, 170, 180, 0.3), 0 0 20px #fba8ff inset;
+      }
+      .button--G {
+        border-radius: 50%;
+        background: linear-gradient(-30deg, #d39bff, #e5c4ff);
+        box-shadow: 0 0 20px rgba(150, 170, 180, 0.3), 0 0 20px #c275ff inset;
+      }
+      .button--H {
+        border-radius: 20px;
+        background: linear-gradient(-30deg, #aaf8ff, #ebfdff);
+        box-shadow: 0 0 20px rgba(150, 170, 180, 0.3), 0 0 20px #77e8f2 inset;
+      }
+      @keyframes bounce {
+        0% {
+          transform: scaleX(1) scaleY(1);
+        }
+        20% {
+          transform: scaleX(0.9) scaleY(1.1);
+        }
+        30% {
+          transform: scaleX(0.9) scaleY(1.1);
+        }
+        40% {
+          transform: scaleX(1.1) scaleY(0.9);
+        }
+        50% {
+          transform: scaleX(0.95) scaleY(1.05);
+        }
+        57% {
+          transform: scaleX(1.05) scaleY(0.95);
+        }
+        64% {
+          transform: scaleX(0.975) scaleY(1.025);
+        }
+        69% {
+          transform: scaleX(1.025) scaleY(0.975);
+        }
+        75% {
+          transform: scaleX(1) scaleY(1);
+        }
+        100% {
+          transform: scaleX(1) scaleY(1);
+        }
+      }
+      /* 本体に関係ないスタイル */
+      .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100vh;
+      }
+      .contaienr__wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 40px;
+        width: 352px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="contaienr__wrapper">
+        <a href="#" class="button--A">ENTRY</a>
+        <a href="#" class="button--E"></a>
+        <a href="#" class="button--F"></a>
+        <a href="#" class="button--B">ENTRY</a>
+        <a href="#" class="button--C">ENTRY</a>
+        <a href="#" class="button--G"></a>
+        <a href="#" class="button--H"></a>
+        <a href="#" class="button--D">ENTRY</a>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Splitting - yelling</title>
+    <link rel="stylesheet" href="./splitting.css" />
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+      }
+
+      .headline {
+        background-color: #e74c3c;
+        align-items: center;
+        display: flex;
+        font-family: "Lexend Deca", sans-serif;
+        font-weight: 700;
+        font-size: calc(1rem + 15vmin);
+        height: 100vh;
+        justify-content: center;
+        overflow: hidden;
+        perspective: 1000px;
+        scroll-snap-align: start;
+        width: 100vw;
+      }
+
+      .headline--yell .char {
+        --name: yell;
+        --dur: 3s;
+        --tf: ease;
+        transform-origin: 50% 100%;
+      }
+
+      @keyframes yell {
+        3% {
+          transform: scale(calc(1 * var(--distance-percent) + 1.5))
+            rotate(calc(15deg * var(--distance-sine))) translateY(-10%);
+        }
+        6% {
+          transform: scale(calc(1 * var(--distance-percent) + 1.2))
+            rotate(calc(15deg * var(--distance-sine))) translateY(-10%);
+        }
+        12% {
+          transform: scale(calc(1 * var(--distance-percent) + 1.5))
+            rotate(calc(15deg * var(--distance-sine))) translateY(-10%);
+        }
+        18% {
+          transform: scaleY(1) translateY(-2%);
+        }
+        25% {
+          transform: scaleY(0.98);
+        }
+        50% {
+          transform: scaleY(1);
+        }
+        75% {
+          transform: scale(0.98);
+        }
+      }
+
+      .word,
+      .char {
+        -webkit-animation-delay: var(--del);
+        animation-delay: var(--del);
+        -webkit-animation-direction: var(--dir, normal);
+        animation-direction: var(--dir, normal);
+        -webkit-animation-duration: var(--dur);
+        animation-duration: var(--dur);
+        -webkit-animation-iteration-count: var(--it, infinite);
+        animation-iteration-count: var(--it, infinite);
+        -webkit-animation-name: var(--name);
+        animation-name: var(--name);
+        -webkit-animation-timing-function: var(--tf);
+        animation-timing-function: var(--tf);
+        -webkit-animation-fill-mode: var(--fill, forwards);
+        animation-fill-mode: var(--fill, forwards);
+        display: inline-block;
+        position: relative;
+        transform-origin: 50% 100%;
+        z-index: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="container">
+      <h2 data-splitting class="headline headline--yell">yelling</h2>
+    </main>
+    <script src="./splitting.min.js"></script>
+    <script>
+      Splitting();
+    </script>
+  </body>
+</html>

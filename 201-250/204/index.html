@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSS颜色混合辅助功能</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Saira+Extra+Condensed:wght@800&family=Staatliches&display=swap");
+      @import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+
+      * {
+        position: relative;
+        box-sizing: border-box;
+      }
+      body,
+      html {
+        width: 100%;
+      }
+
+      body {
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #cce8ed;
+        flex-direction: column;
+        padding: 50px;
+      }
+
+      .nav {
+        margin: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 50px;
+      }
+
+      .display {
+        width: 100%;
+      }
+
+      h1 {
+        font-family: "Saira Extra Condensed", sans-serif;
+        margin: 0.2em 0 0 0;
+        color: #002953;
+        font-size: clamp(30px, 4vw, 80px);
+      }
+
+      h2 {
+        margin: 2.5em 0 1em 2em;
+        font-family: sans-serif;
+        font-weight: normal;
+        color: #111;
+        font-size: 1.1em;
+      }
+
+      h2:first-child {
+        margin-bottom: 0.5em;
+      }
+
+      h2 span {
+        font-family: Courier, sans-serif;
+        font-size: 0.9em;
+        padding: 0.5em;
+        background: #ececdd;
+        border-radius: 4px;
+        margin: 0.5em 1em 0 0;
+        display: inline-block;
+        box-shadow: 2px 2px 2px 2px rgb(0, 0, 0, 0.1);
+      }
+
+      .color {
+        width: 50px;
+        height: 50px;
+        background: grey;
+      }
+
+      .colorBar {
+        width: 100%;
+        height: clamp(75px, 15vh, 150px);
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 4px;
+      }
+
+      .boxes div {
+        width: 100%;
+        height: 100%;
+      }
+
+      button {
+        padding: 1em;
+      }
+
+      input[type="color" i] {
+        appearance: auto;
+        inline-size: 100px;
+        block-size: 100px;
+        cursor: default;
+        box-sizing: border-box;
+        background-color: buttonface;
+        color: buttontext;
+        border-width: 1px;
+        border-style: solid;
+        border-color: buttonborder;
+        border-image: initial;
+        padding: 1px 2px;
+      }
+
+      @media screen and (max-width: 475px) {
+        h2 span {
+          display: none;
+        }
+        h2 {
+          margin: 0.2em;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Choose 2 Colors to Mix</h1>
+    <br />
+    <div class="nav">
+      <div>
+        <input type="color" id="start" name="start" value="#e66465" />
+        <!-- <label for="start">Start Color</label> -->
+      </div>
+
+      <div>
+        <input type="color" id="end" name="end" value="#f6b73c" />
+        <!-- <label for="end">End Color</label> -->
+      </div>
+      <button id="sample">Next Sample</button>
+    </div>
+    <div class="display">
+      <h2>
+        Step through array of colors
+        <a href="#" onclick="copyToClipboard()"> Copy Array to Clipboard</a>
+      </h2>
+      <div class="colorBar boxes"></div>
+      <h2>oklch color mix gradient<br /><span id="oklchCode"></span></h2>
+      <div class="colorBar oklch"></div>
+      <h2>normal gradient<br /><span id="normalCode"></span></h2>
+
+      <div class="colorBar normal"></div>
+    </div>
+    <script src="./gsap.min.js"></script>
+    <script>
+      const boxes = document.querySelector(".boxes");
+      const oklch = document.querySelector(".oklch");
+      const normal = document.querySelector(".normal");
+      let colors = [];
+
+      /* --- CONFIG --- */
+
+      const steps = 12;
+
+      /* --- END CONFIG --- */
+
+      const samples = [
+        ["#ffff00", "#0000ff"],
+        ["#ee00ff", "#00ff00"],
+        ["#ccffff", "#700000"],
+        ["#2eff89", "#081e35"],
+        ["#ffd747", "#291929"],
+        ["#c3ffc2", "#8f62ac"],
+        ["#f5f53d", "#0c0c12"],
+      ];
+
+      let sampleIndex = 0;
+      const sampleMax = samples.length;
+
+      //generate an array of mixed colors
+
+      function mixColors(start, end, steps) {
+        colors = [];
+        steps -= 1;
+        for (let i = 0; i <= steps; i++) {
+          let percent = (i / steps) * 100;
+          colors.push(`color-mix(in oklch, ${start}, ${end} ${percent}%)`);
+        }
+        console.clear();
+        console.log(colors);
+        return colors;
+      }
+
+      function change() {
+        let start = startPicker.value;
+        let end = endPicker.value;
+        let colors = mixColors(start, end, steps);
+        //update boxes
+        gsap.set(".boxes div", { backgroundColor: gsap.utils.wrap(colors) });
+
+        //update oklch gradient preview
+        oklch.style.background = `linear-gradient(to right in oklch shorter hue, ${start}, ${end})`;
+        oklchCode.innerHTML = `background: linear-gradient(to right in oklch shorter hue, ${start}, ${end});`;
+
+        //update normal css gradient preview
+        normal.style.background = `linear-gradient(90deg, ${start}, ${end})`;
+        normalCode.innerHTML = `background: linear-gradient(90deg, ${start}, ${end});`;
+      }
+
+      sample.addEventListener("click", () => {
+        sampleIndex++;
+        sampleIndex = sampleIndex % sampleMax;
+        startPicker.value = samples[sampleIndex][0];
+        endPicker.value = samples[sampleIndex][1];
+        change();
+      });
+
+      function init() {
+        for (let i = 0; i < steps; i++) {
+          let newDiv = document.createElement("div");
+          boxes.appendChild(newDiv);
+        }
+        startPicker = document.querySelector("#start");
+        startPicker.value = samples[0][0];
+        startPicker.addEventListener("input", change, false);
+
+        endPicker = document.querySelector("#end");
+        endPicker.value = samples[0][1];
+        endPicker.addEventListener("input", change, false);
+
+        change();
+      }
+
+      function copyToClipboard() {
+        navigator.clipboard.writeText(`let colors = [${colors}]`);
+        alert(`Copied to Clipboard \nlet colors = [${colors}]`);
+      }
+
+      init();
+    </script>
+  </body>
+</html>

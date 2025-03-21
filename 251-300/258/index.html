@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>便签</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+      body {
+        margin: 0px;
+        font-family: "Poppins", serif;
+        background: #531753;
+      }
+      .container {
+        position: relative;
+        max-width: 700px;
+        width: 100%;
+        margin: 0px auto;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .inner_container {
+        position: relative;
+        max-width: 400px;
+        width: 100%;
+        padding: 15px;
+        border-radius: 25px;
+        box-sizing: border-box;
+      }
+      .park_sec {
+        position: relative;
+        max-width: 100%;
+        width: 100%;
+        padding: 15px;
+        border: 2px solid #eaeae9;
+        border-radius: 25px;
+        box-sizing: border-box;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        margin-bottom: 10px;
+        transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        background: #fff;
+        box-shadow: 0px 5px 10px #201c1c;
+      }
+      .park_sec.active {
+        transform: unset;
+      }
+      .park_sec1 {
+        z-index: 2;
+        transform: translateY(200%) scale(0.95);
+      }
+      .park_sec2 {
+        z-index: 1;
+        transform: translateY(100%) scale(0.9);
+      }
+      .park_sec3 {
+        z-index: 0;
+        transform: translateY(0px) scale(0.85);
+      }
+      .park_inside {
+        position: relative;
+        display: flex;
+      }
+      .content_sec {
+        position: relative;
+        margin-left: 10px;
+      }
+      .img {
+        position: relative;
+        width: 50px;
+        height: 50px;
+        background: #000;
+        border-radius: 50%;
+      }
+      .content_sec h2 {
+        position: relative;
+        margin: 0px;
+        font-size: 16px;
+        font-weight: 500;
+      }
+      .content_sec span,
+      .park_sec span {
+        position: relative;
+        color: #626263;
+        font-size: 15px;
+      }
+      .btn_grp {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .btn {
+        position: relative;
+        padding: 10px 40px 10px 30px;
+        background: #fff;
+        border-radius: 20px;
+        border: 0px;
+        box-sizing: border-box;
+        box-shadow: 0px 3px 3.5px #777171;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      .btn::after {
+        position: absolute;
+        content: "";
+        border-top: 2px solid #000;
+        border-left: 2px solid #000;
+        width: 7px;
+        height: 7px;
+        right: 23px;
+        top: 12px;
+        transform: rotate(225deg);
+        transition: all 0.3s linear;
+      }
+      .btn.active::after {
+        transform: rotate(45deg);
+        top: 17px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="inner_container">
+        <div class="park_sec park_sec1">
+          <div class="park_inside">
+            <span class="img"></span>
+            <div class="content_sec">
+              <h2>Camping</h2>
+              <span>Yosemite Park</span>
+            </div>
+          </div>
+          <span class="date">5 August</span>
+        </div>
+        <div class="park_sec park_sec2">
+          <div class="park_inside">
+            <span class="img"></span>
+            <div class="content_sec">
+              <h2>Boating</h2>
+              <span>Lake Tahoe Park</span>
+            </div>
+          </div>
+          <span class="date">2 August</span>
+        </div>
+        <div class="park_sec park_sec3">
+          <div class="park_inside">
+            <span class="img"></span>
+            <div class="content_sec">
+              <h2>Barbeue</h2>
+              <span>GreenField Shores</span>
+            </div>
+          </div>
+          <span class="date">28 July</span>
+        </div>
+        <div class="btn_grp">
+          <button class="btn">Show All</button>
+        </div>
+      </div>
+    </div>
+    <script>
+      const btn = document.querySelector(".btn");
+      const park_sec = document.querySelectorAll(".park_sec");
+
+      var sendFlag = 0;
+
+      btn.addEventListener("click", function () {
+        this.classList.toggle("active");
+
+        if (sendFlag === 0) {
+          sendFlag = 1;
+          this.textContent = "Hide";
+          park_sec.forEach(function (item) {
+            item.classList.add("active");
+          });
+        } else {
+          sendFlag = 0;
+          this.textContent = "Show All";
+          park_sec.forEach(function (item) {
+            item.classList.remove("active");
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

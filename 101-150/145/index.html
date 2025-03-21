@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gleaming Loading</title>
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Lato);
+
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: black;
+      }
+
+      .loading {
+        color: white;
+        letter-spacing: 1rem;
+        font-size: 1.5rem;
+        font-family: Lato, sans-serif;
+        text-transform: uppercase;
+      }
+
+      .loading span {
+        animation: blur 1.5s alternate infinite;
+      }
+
+      @keyframes blur {
+        to {
+          filter: blur(5px);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="loading">Loading</div>
+    <script>
+      let loading = document.querySelector(".loading");
+      let letters = loading.textContent.split("");
+      loading.textContent = "";
+      letters.forEach((letter, i) => {
+        let span = document.createElement("span");
+        span.textContent = letter;
+        span.style.animationDelay = `${i / 5}s`;
+        loading.append(span);
+      });
+    </script>
+  </body>
+</html>

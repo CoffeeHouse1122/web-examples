@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>button - 悬停圆形扩散</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        width: 100%;
+        height: 100vh;
+        background-color: #04111b;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .button {
+        box-sizing: border-box;
+        width: 160px;
+        height: 48px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 0;
+        border-radius: 6px;
+        color: #ffffff;
+        background-color: #35a2fd;
+        font-size: 24px;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        transition: 0.3s;
+      }
+
+      .button span {
+        z-index: 2;
+      }
+
+      .button::before {
+        content: "";
+        position: absolute;
+        left: var(--xPos);
+        top: var(--yPos);
+        transform: translate(-50%, -50%);
+        width: 2px;
+        height: 2px;
+        background-color: #fff;
+        border-radius: 50%;
+        transition: width 0.4s, height 0.4s;
+        transform-origin: center;
+        z-index: 1;
+      }
+
+      .button:hover::before {
+        width: 400px;
+        height: 400px;
+      }
+
+      .button:hover span {
+        color: #666;
+      }
+    </style>
+  </head>
+  <body>
+    <button class="button">
+      <span>Button</span>
+    </button>
+    <script>
+      const button = document.querySelector(".button");
+      button.addEventListener("mousemove", (e) => {
+        const { left, top } = button.getBoundingClientRect();
+        const x = e.pageX - left;
+        const y = e.pageY - top;
+
+        button.style.setProperty("--xPos", `${x}px`);
+        button.style.setProperty("--yPos", `${y}px`);
+      });
+
+      button.addEventListener("mouseleave", (e) => {
+        const { left, top } = button.getBoundingClientRect();
+        const x = e.pageX - left;
+        const y = e.pageY - top;
+
+        button.style.setProperty("--xPos", `${x}px`);
+        button.style.setProperty("--yPos", `${y}px`);
+      });
+    </script>
+  </body>
+</html>

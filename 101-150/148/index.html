@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>白色按钮</title>
+    <style>
+      :root {
+        --sizeVar: 2vw;
+        --animVar: 200ms;
+      }
+
+      body {
+        background-color: #ffffff;
+        position: absolute;
+        inset: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+      }
+
+      .flex {
+        position: absolute;
+        display: flex;
+        background-color: #ffffff;
+        padding: calc(var(--sizeVar) * 2.5);
+        border-radius: calc(var(--sizeVar) * 1.5);
+        box-shadow: 0 var(--sizeVar) calc(var(--sizeVar) * 0.5) #00000033,
+          0 0 calc(var(--sizeVar) * 0.5) calc(var(--sizeVar) * 0.2) #00000006;
+        justify-content: center;
+        align-items: center;
+        gap: var(--sizeVar);
+      }
+      .key {
+        width: calc(var(--sizeVar) * 5.6);
+        aspect-ratio: 1 / 1;
+        background-color: #ffffff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: calc(var(--sizeVar) * 0.7);
+        font-size: calc(var(--sizeVar) * 2);
+        font-family: sans-serif;
+        font-weight: 300;
+        color: #dddddd;
+        cursor: pointer;
+        box-shadow: 0 var(--sizeVar) calc(var(--sizeVar) * 0.5) #00000055,
+          0 0 calc(var(--sizeVar) * 0.5) calc(var(--sizeVar) * 0.2) #00000011;
+        transition: filter var(--animVar) ease-in-out 0s,
+          box-shadow var(--animVar) ease-in-out 0s,
+          color var(--animVar) ease-in-out 0s;
+      }
+
+      .key:hover {
+        filter: brightness(97%);
+        box-shadow: 0 calc(var(--sizeVar) * 0.5) calc(var(--sizeVar) * 0.5)
+            #00000055,
+          0 0 calc(var(--sizeVar) * 0.5) calc(var(--sizeVar) * 0.2) #00000011;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="flex">
+      <div class="key">Q</div>
+      <div class="key">W</div>
+      <div class="key">E</div>
+      <div class="key">R</div>
+      <div class="key">T</div>
+      <div class="key">Y</div>
+    </div>
+  </body>
+</html>

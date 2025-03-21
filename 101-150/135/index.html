@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>竖向滚动单模型</title>
+    <script
+      type="module"
+      src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.1.1/model-viewer.min.js"
+    ></script>
+    <style>
+      @keyframes foo {
+      }
+
+      model-viewer {
+        display: block;
+        width: 100%;
+        margin-top: 10vh;
+        height: 80vh;
+        position: fixed;
+        animation: foo;
+        animation-timeline: scroll();
+        pointer-events: none;
+      }
+
+      model-viewer::part(default-progress-bar) {
+        display: none;
+      }
+
+      header,
+      footer {
+        position: fixed;
+        left: 0;
+        right: 0;
+        text-align: center;
+        font-style: italic;
+      }
+      header {
+        top: 1em;
+      }
+      footer {
+        bottom: 0;
+      }
+
+      html {
+        height: 400vh;
+        background: #2a2a2a;
+        color: #e4e4e4;
+      }
+    </style>
+  </head>
+
+  <body>
+    <model-viewer src="./star_rail_-_fu_xuan.glb"></model-viewer>
+
+    <script>
+      const $model = document.querySelector("model-viewer");
+      const animation = $model.getAnimations()[0];
+
+      const updataValue = () => {
+        let progress = animation.effect.getComputedTiming().progress;
+        if (animation.playState === "finished") progress = 1;
+        progress = Math.max(0, Math.min(1, progress)).toFixed(2);
+
+        $model.orientation = `0deg 0deg ${progress * -360}deg`;
+
+        requestAnimationFrame(updataValue);
+      };
+
+      requestAnimationFrame(updataValue);
+    </script>
+  </body>
+</html>

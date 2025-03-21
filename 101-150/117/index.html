@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>毛刺故障效果</title>
+    <style>
+      /* -----------------------------
+↓　エフェクトには関係ないCSSです　↓
+----------------------------- */
+      .container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100vh;
+        background: #000;
+      }
+      /* -----------------------------
+↑　エフェクトには関係ないCSSです　↑
+----------------------------- */
+
+      /* /////////////////////////////////////////////////////
+
+  以下まるっとコピペ
+
+//////////////////////////////////////////////////////*/
+      /* -----------------------------
+
+atw-glitch setting
+
+----------------------------- */
+      /* 任意のカラー設定 */
+      :root {
+        --text_base_color: #ffffff; /* ベースの文字カラー */
+        --text_glitch_color-1: #9400ff; /* グリッチカラー1 */
+        --text_glitch_color-2: #12f3ff; /* グリッチカラー2 */
+      }
+      /* 任意の文字設定 */
+      .text {
+        font-size: clamp(42px, 10vw, 64px); /* 文字サイズ */
+        letter-spacing: 0.3em; /* 文字間隔（通常より少し広くするのがおすすめ） */
+        font-family: "Outfit", sans-serif;
+      }
+
+      /* -----------------------------
+
+atw-glitch base style
+
+----------------------------- */
+      .atw-glitch {
+        margin: 0;
+        display: inline-block;
+        position: relative;
+        color: transparent;
+        overflow: hidden;
+      }
+      .atw-glitch__mainText--1,
+      .atw-glitch__mainText--2,
+      .atw-glitch__mainText--3,
+      .atw-glitch__mainText--4,
+      .atw-glitch__mainText--5,
+      .atw-glitch__mainText--6 {
+        display: inline-block;
+        position: absolute;
+        overflow: hidden;
+        width: 100%;
+        color: var(--text_base_color);
+        text-shadow: 0em 0 var(--text_glitch_color-1),
+          0em 0 var(--text_glitch_color-2);
+        animation-duration: 2s;
+        animation-timing-function: linear;
+        animation-iteration-count: infinite;
+      }
+      .atw-glitch__mainText--1 {
+        height: 35%;
+        top: 0;
+        left: 0;
+        animation-name: atw-glitch_3;
+      }
+      .atw-glitch__mainText--2 {
+        height: 5%;
+        top: 35%;
+        right: 0;
+        animation-name: atw-glitch_2;
+      }
+      .atw-glitch__mainText--3 {
+        height: 15%;
+        top: 40%;
+        left: 0;
+        animation-name: atw-glitch_3;
+      }
+      .atw-glitch__mainText--4 {
+        height: 35%;
+        bottom: 0;
+        right: 0;
+        animation-name: atw-glitch_1;
+      }
+      .atw-glitch__mainText--5 {
+        height: 5%;
+        bottom: 40%;
+        right: 0;
+        animation-name: atw-glitch_2;
+      }
+      .atw-glitch__mainText--6 {
+        height: 5%;
+        bottom: 35%;
+        left: 0;
+        animation-name: atw-glitch_3;
+      }
+      .atw-glitch__inner {
+        display: inline-block;
+        position: absolute;
+        left: 0;
+      }
+      .atw-glitch__mainText--2 .atw-glitch__inner {
+        top: -700%;
+        height: 2000%;
+      }
+      .atw-glitch__mainText--3 .atw-glitch__inner {
+        height: 666.6666%;
+        top: -265%;
+      }
+
+      .atw-glitch__mainText--4 .atw-glitch__inner {
+        height: 285.7142%;
+        bottom: 0;
+      }
+      .atw-glitch__mainText--5 .atw-glitch__inner {
+        height: 2000%;
+        bottom: -800%;
+      }
+      .atw-glitch__mainText--6 .atw-glitch__inner {
+        height: 2000%;
+        bottom: -700%;
+      }
+      @keyframes atw-glitch_1 {
+        0% {
+          left: 0;
+          text-shadow: 0em 0 var(--text_glitch_color-1),
+            0em 0 var(--text_glitch_color-2);
+        }
+        20% {
+          left: 0;
+          text-shadow: 0em 0 var(--text_glitch_color-1),
+            0em 0 var(--text_glitch_color-2);
+        }
+        21% {
+          left: -0.01em;
+          text-shadow: 0.02em 0 var(--text_glitch_color-1),
+            -0.02em 0 var(--text_glitch_color-2);
+        }
+        22% {
+          left: 0;
+          text-shadow: 0em 0 var(--text_glitch_color-1),
+            0em 0 var(--text_glitch_color-2);
+        }
+        26% {
+          left: 0;
+          text-shadow: 0em 0 var(--text_glitch_color-1),
+            0em 0 var(--text_glitch_color-2);
+        }
+        27% {
+          left: -0.04em;
+          text-shadow: 0.04em 0 var(--text_glitch_color-1),
+            -0.04em 0 var(--text_glitch_color-2);
+        }
+        28% {
+          left: -0.01em;
+          text-shadow: 0.02em 0 var(--text_glitch_color-1),
+            -0.02em 0 var(--text_glitch_color-2);
+        }
+        29% {
+          left: -0.04em;
+          text-shadow: 0.04em 0 var(--text_glitch_color-1),
+            -0.04em 0 var(--text_glitch_color-2);
+        }
+        30% {
+          left: 0;
+          text-shadow: 0em 0 var(--text_glitch_color-1),
+            0em 0 var(--text_glitch_color-2);
+        }
+        36% {
+          left: 0;
+          text-shadow: 0em 0 var(--text_glitch_color-1),
+            0em 0 var(--text_glitch_color-2);
+        }
+        37% {
+          left: -0.01em;
+          text-shadow: 0.02em 0 var(--text_glitch_color-1),
+            -0.02em 0 var(--text_glitch_color-2);
+        }
+        38% {
+          left: 0.01em;
+          text-shadow: 0.02em 0 var(--text_glitch_color-1),
+            -0.02em 0 var(--text_glitch_color-2);
+        }
+        39% {
+          left: -0.04em;
+          text-shadow: 0.04em 0 var(--text_glitch_color-1),
+            -0.04em 0 var(--text_glitch_color-2);
+        }
+        42% {
+          left: -0.04em;
+          text-shadow: 0.04em 0 var(--text_glitch_color-1),
+            -0.04em 0 var(--text_glitch_color-2);
+        }
+        43% {
+          left: 0.01em;
+          text-shadow: 0.01em 0 var(--text_glitch_color-1),
+            -0.01em 0 var(--text_glitch_color-2);
+        }
+        44% {
+          left: -0.01em;
+          text-shadow: 0.01em 0 var(--text_glitch_color-1),
+            -0.01em 0 var(--text_glitch_color-2);
+        }
+        45% {
+          left: 0;
+          text-shadow: 0em 0 var(--text_glitch_color-1),
+            0em 0 var(--text_glitch_color-2);
+        }
+        46% {
+          left: 0.04em;
+          text-shadow: 0.04em 0 var(--text_glitch_color-1),
+            0.04em 0 var(--text_glitch_color-2);
+        }
+        47% {
+          left: 0;
+          text-shadow: 0em 0 var(--text_glitch_color-1),
+            0em 0 var(--text_glitch_color-2);
+        }
+        52% {
+          left: 0;
+          text-shadow: 0em 0 var(--text_glitch_color-1),
+            0em 0 var(--text_glitch_color-2);
+        }
+        53% {
+          left: 0.04em;
+          text-shadow: 0.04em 0 var(--text_glitch_color-1),
+            0.04em 0 var(--text_glitch_color-2);
+        }
+        54% {
+          left: -0.01em;
+          text-shadow: 0.01em 0 var(--text_glitch_color-1),
+            -0.01em 0 var(--text_glitch_color-2);
+        }
+        55% {
+          left: 0;
+          text-shadow: 0em 0 var(--text_glitch_color-1),
+            0em 0 var(--text_glitch_color-2);
+        }
+        100% {
+          left: 0;
+          text-shadow: 0em 0 var(--text_glitch_color-1),
+            0em 0 var(--text_glitch_color-2);
+        }
+      }
+      @keyframes atw-glitch_2 {
+        0% {
+          right: 0;
+          text-shadow: 0em 0 var(--text_glitch_color-1),
+            0em 0 var(--text_glitch_color-2);
+        }
+        20% {
+          right: 0;
+          text-shadow: 0em 0 var(--text_glitch_color-1),
+            0em 0 var(--text_glitch_color-2);
+        }
+        21% {
+          right: -0.02em;
+          text-shadow: 0.04em 0 var(--text_glitch_color-1),
+            -0.04em 0 var(--text_glitch_color-2);
+        }
+        22% {
+          right: 0;
+          text-shadow: 0em 0 var(--text_glitch_color-1),
+            0em 0 var(--text_glitch_color-2);
+        }
+        26% {
+          right: 0;
+          text-shadow: 0em 0 var(--text_glitch_color-1),
+            0em 0 var(--text_glitch_color-2);
+        }
+        27% {
+          right: -0.07em;
+          text-shadow: 0.06em 0 var(--text_glitch_color-1),
+            -0.06em 0 var(--text_glitch_color-2);
+        }
+        28% {
+          right: -0.02em;
+          text-shadow: 0.04em 0 var(--text_glitch_color-1),
+            -0.04em 0 var(--text_glitch_color-2);
+        }
+        29% {
+          right: -0.07em;
+          text-shadow: 0.06em 0 var(--text_glitch_color-1),
+            -0.06em 0 var(--text_glitch_color-2);
+        }
+        30% {
+          right: 0;
+          text-shadow: 0em 0 var(--text_glitch_color-1),
+            0em 0 var(--text_glitch_color-2);
+        }
+        36% {
+          right: 0;
+          text-shadow: 0em 0 var(--text_glitch_color-1),
+            0em 0 var(--text_glitch_color-2);
+        }
+        37% {
+          right: -0.02em;
+          text-shadow: 0.04em 0 var(--text_glitch_color-1),
+            -0.04em 0 var(--text_glitch_color-2);
+        }
+        38% {
+          right: 0.02em;
+          text-shadow: 0.04em 0 var(--text_glitch_color-1),
+            -0.04em 0 var(--text_glitch_color-2);
+        }
+        39% {
+          right: -0.07em;
+          text-shadow: 0.06em 0 var(--text_glitch_color-1),
+            -0.06em 0 var(--text_glitch_color-2);
+        }
+        42% {
+          right: -0.07em;
+          text-shadow: 0.06em 0 var(--text_glitch_color-1),
+            -0.06em 0 var(--text_glitch_color-2);
+        }
+        43% {
+          right: 0.02em;
+          text-shadow: 0.04em 0 var(--text_glitch_color-1),
+            -0.04em 0 var(--text_glitch_color-2);
+        }
+        44% {
+          right: -0.02em;
+          text-shadow: 0.04em 0 var(--text_glitch_color-1),
+            -0.04em 0 var(--text_glitch_color-2);
+        }
+        45% {
+          right: 0;
+          text-shadow: 0em 0 var(--text_glitch_color-1),
+            0em 0 var(--text_glitch_color-2);
+        }
+        46% {
+          right: 0.07em;
+          text-shadow: 0.06em 0 var(--text_glitch_color-1),
+            0.06em 0 var(--text_glitch_color-2);
+        }
+        47% {
+          right: 0;
+          text-shadow: 0em 0 var(--text_glitch_color-1),
+            0em 0 var(--text_glitch_color-2);
+        }
+        52% {
+          right: 0;
+          text-shadow: 0em 0 var(--text_glitch_color-1),
+            0em 0 var(--text_glitch_color-2);
+        }
+        53% {
+          right: 0.07em;
+          text-shadow: 0.06em 0 var(--text_glitch_color-1),
+            0.06em 0 var(--text_glitch_color-2);
+        }
+        54% {
+          right: -0.02em;
+          text-shadow: 0.04em 0 var(--text_glitch_color-1),
+            -0.04em 0 var(--text_glitch_color-2);
+        }
+        55% {
+          right: 0;
+          text-shadow: 0em 0 var(--text_glitch_color-1),
+            0em 0 var(--text_glitch_color-2);
+        }
+        100% {
+          right: 0;
+          text-shadow: 0em 0 var(--text_glitch_color-1),
+            0em 0 var(--text_glitch_color-2);
+        }
+      }
+      @keyframes atw-glitch_3 {
+        0% {
+          left: 0;
+          text-shadow: 0em 0 var(--text_glitch_color-1),
+            0em 0 var(--text_glitch_color-2);
+        }
+        20% {
+          left: 0;
+          text-shadow: 0em 0 var(--text_glitch_color-1),
+            0em 0 var(--text_glitch_color-2);
+        }
+        21% {
+          left: -0.02em;
+          text-shadow: 0.04em 0 var(--text_glitch_color-1),
+            -0.04em 0 var(--text_glitch_color-2);
+        }
+        22% {
+          left: 0;
+          text-shadow: 0em 0 var(--text_glitch_color-1),
+            0em 0 var(--text_glitch_color-2);
+        }
+        26% {
+          left: 0;
+          text-shadow: 0em 0 var(--text_glitch_color-1),
+            0em 0 var(--text_glitch_color-2);
+        }
+        27% {
+          left: -0.07em;
+          text-shadow: 0.06em 0 var(--text_glitch_color-1),
+            -0.06em 0 var(--text_glitch_color-2);
+        }
+        28% {
+          left: -0.02em;
+          text-shadow: 0.04em 0 var(--text_glitch_color-1),
+            -0.04em 0 var(--text_glitch_color-2);
+        }
+        29% {
+          left: -0.07em;
+          text-shadow: 0.06em 0 var(--text_glitch_color-1),
+            -0.06em 0 var(--text_glitch_color-2);
+        }
+        30% {
+          left: 0;
+          text-shadow: 0em 0 var(--text_glitch_color-1),
+            0em 0 var(--text_glitch_color-2);
+        }
+        36% {
+          left: 0;
+          text-shadow: 0em 0 var(--text_glitch_color-1),
+            0em 0 var(--text_glitch_color-2);
+        }
+        37% {
+          left: -0.02em;
+          text-shadow: 0.04em 0 var(--text_glitch_color-1),
+            -0.04em 0 var(--text_glitch_color-2);
+        }
+        38% {
+          left: 0.02em;
+          text-shadow: 0.04em 0 var(--text_glitch_color-1),
+            -0.04em 0 var(--text_glitch_color-2);
+        }
+        39% {
+          left: -0.07em;
+          text-shadow: 0.06em 0 var(--text_glitch_color-1),
+            -0.06em 0 var(--text_glitch_color-2);
+        }
+        42% {
+          left: -0.07em;
+          text-shadow: 0.06em 0 var(--text_glitch_color-1),
+            -0.06em 0 var(--text_glitch_color-2);
+        }
+        43% {
+          left: 0.02em;
+          text-shadow: 0.04em 0 var(--text_glitch_color-1),
+            -0.04em 0 var(--text_glitch_color-2);
+        }
+        44% {
+          left: -0.02em;
+          text-shadow: 0.04em 0 var(--text_glitch_color-1),
+            -0.04em 0 var(--text_glitch_color-2);
+        }
+        45% {
+          left: 0;
+          text-shadow: 0em 0 var(--text_glitch_color-1),
+            0em 0 var(--text_glitch_color-2);
+        }
+        46% {
+          left: 0.07em;
+          text-shadow: 0.06em 0 var(--text_glitch_color-1),
+            0.06em 0 var(--text_glitch_color-2);
+        }
+        47% {
+          left: 0;
+          text-shadow: 0em 0 var(--text_glitch_color-1),
+            0em 0 var(--text_glitch_color-2);
+        }
+        52% {
+          left: 0;
+          text-shadow: 0em 0 var(--text_glitch_color-1),
+            0em 0 var(--text_glitch_color-2);
+        }
+        53% {
+          left: 0.07em;
+          text-shadow: 0.06em 0 var(--text_glitch_color-1),
+            0.06em 0 var(--text_glitch_color-2);
+        }
+        54% {
+          left: -0.02em;
+          text-shadow: 0.04em 0 var(--text_glitch_color-1),
+            -0.04em 0 var(--text_glitch_color-2);
+        }
+        55% {
+          left: 0;
+          text-shadow: 0em 0 var(--text_glitch_color-1),
+            0em 0 var(--text_glitch_color-2);
+        }
+        100% {
+          left: 0;
+          text-shadow: 0em 0 var(--text_glitch_color-1),
+            0em 0 var(--text_glitch_color-2);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- -----------------------------------
+         <p>タグを子要素含めまるっとコピペして
+         "SLash"の文字部分を任意の文字に変更してください。
+    
+         ※7箇所すべて同じ文字を入れる
+      ------------------------------------ -->
+      <p class="text atw-glitch">
+        SLash
+        <span class="atw-glitch__mainText--1">SLash</span>
+        <span class="atw-glitch__mainText--2">
+          <span class="atw-glitch__inner">SLash</span>
+        </span>
+        <span class="atw-glitch__mainText--3">
+          <span class="atw-glitch__inner">SLash</span>
+        </span>
+        <span class="atw-glitch__mainText--4">
+          <span class="atw-glitch__inner">SLash</span>
+        </span>
+        <span class="atw-glitch__mainText--5">
+          <span class="atw-glitch__inner">SLash</span>
+        </span>
+        <span class="atw-glitch__mainText--6">
+          <span class="atw-glitch__inner">SLash</span>
+        </span>
+      </p>
+    </div>
+  </body>
+</html>

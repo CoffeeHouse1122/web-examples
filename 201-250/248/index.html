@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>动画 - 紧张 or 放松</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Aleo:wght@100..900&family=Montserrat:wght@100..900&display=swap");
+      body,
+      html {
+        height: 100%;
+        background-color: #000;
+      }
+      body {
+        height: 100%;
+        font-family: "Montserrat", sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0px;
+        color: #fff;
+        font-size: 5vw;
+      }
+
+      body {
+        transition: 2.5s all 0s ease;
+        background-color: #e45801;
+      }
+
+      .pressure {
+        font-variation-settings: "wght" 900;
+        animation-name: shake;
+        animation-iteration-count: infinite;
+        animation-duration: 0.1s;
+        position: relative;
+        letter-spacing: -0.1em;
+        cursor: pointer;
+      }
+      .pressure:before {
+        content: attr(data-textfirst);
+      }
+      .pressure input {
+        position: absolute;
+        right: 100vw;
+      }
+
+      .pressure:has(input:checked) {
+        animation-name: release;
+        animation-iteration-count: 1;
+        animation-duration: 3s;
+        animation-fill-mode: forwards;
+        animation-timing-function: cubic-bezier(0, 0, 0, 1);
+      }
+      .pressure:has(input:checked):before {
+        content: attr(data-textsecond);
+      }
+      body:has(.pressure input:checked) {
+        background-color: #0c666b;
+      }
+
+      @keyframes shake {
+        0% {
+          top: 1px;
+          left: 0px;
+        }
+        10% {
+          top: -1px;
+          left: 2px;
+        }
+        20% {
+          top: 1px;
+          left: 0px;
+        }
+        30% {
+          top: -1px;
+        }
+        40% {
+          top: 1px;
+        }
+        50% {
+          top: -1px;
+        }
+        60% {
+          top: -3px;
+        }
+        70% {
+          top: 2px;
+        }
+        80% {
+          top: -2px;
+        }
+        90% {
+          top: 1px;
+        }
+        100% {
+          top: 0px;
+        }
+      }
+
+      @keyframes release {
+        0% {
+          font-variation-settings: "wght" 900;
+        }
+
+        100% {
+          font-variation-settings: "wght" 100;
+          letter-spacing: 1.2em;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <label class="pressure" data-textfirst="STRESSED" data-textsecond="RELAXED">
+      <input type="checkbox" />
+    </label>
+  </body>
+</html>

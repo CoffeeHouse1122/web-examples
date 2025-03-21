@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>重叠的色块</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="c"></canvas>
+    <script>
+      const c = document.querySelector("#c");
+      const ctx = c.getContext("2d");
+
+      c.style.width = c.width = window.innerWidth;
+      c.style.height = c.height = window.innerHeight;
+
+      const palette = ["#390099", "#9e0059", "#ff0054", "#ff5400", "#ffbd00"];
+
+      const mouse = { x: 0, y: 0 };
+
+      window.addEventListener("mousemove", (e) => {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+      });
+
+      const animate = (time) => {
+        requestAnimationFrame(animate);
+
+        ctx.fillStyle = "rgba(0, 0, 0, 1)";
+        ctx.fillRect(0, 0, c.width, c.height);
+
+        const count = 20;
+        const max = 200;
+        const min = 20;
+
+        for (let i = 0; i < count; i++) {
+          // Сбрасываем трансформацию
+          ctx.setTransform(1, 0, 0, 1, 0, 0);
+
+          ctx.fillStyle = "rgba(0, 0, 0, 0.07)";
+          ctx.fillRect(0, 0, c.width, c.height);
+
+          const s = Math.sin(i / 2 + performance.now() / 600);
+          const x = c.width / 2 + s * 100;
+          const y =
+            c.height / 2 + (((count / 2 - i) * c.height) / count) * 0.75;
+
+          const cx = c.width / 2;
+          const cy = c.height / 2;
+
+          const ex = -(cx - mouse.x) / 10;
+          const ey = -(cy - mouse.y) / 10;
+
+          ctx.translate(x - ex, y - ey);
+          ctx.rotate(s / 2);
+          const size = 200 - (1 - i / count) * 180;
+
+          ctx.fillStyle = `rgba(0, 0, 0, 0.25)`;
+
+          ctx.fillRect(-size / 2, -size / 2, size, size);
+
+          ctx.translate(ex, ey);
+          ctx.rotate(s / 8);
+          ctx.fillStyle = palette[i % palette.length];
+
+          ctx.fillRect(-size / 2, -size / 2, size, size);
+        }
+      };
+
+      animate(0);
+    </script>
+  </body>
+</html>

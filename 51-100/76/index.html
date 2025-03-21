@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Circular Navigation</title>
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Lato:300,400,700);
+
+      * {
+        position: relative;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        background: #52be7f;
+        color: #fff;
+      }
+
+      .component {
+        position: relative;
+        margin-bottom: 3em;
+        height: 15em;
+        background: rgba(0, 0, 0, 0.05);
+        font-family: "Lato", Arial, sans-serif;
+      }
+
+      .component > h2 {
+        position: absolute;
+        overflow: hidden;
+        width: 100%;
+        text-align: center;
+        text-transform: uppercase;
+        white-space: nowrap;
+        font-weight: 300;
+        font-style: italic;
+        font-size: 12em;
+        opacity: 0.1;
+        cursor: default;
+      }
+
+      .cn-button {
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        z-index: 11;
+        margin-top: -2.25em;
+        margin-left: -2.25em;
+        padding-top: 0;
+        width: 4.5em;
+        height: 4.5em;
+        border: none;
+        border-radius: 50%;
+        background: none;
+        background-color: #fff;
+        color: #52be7f;
+        text-align: center;
+        font-weight: 700;
+        font-size: 1.5em;
+        text-transform: uppercase;
+        cursor: pointer;
+      }
+
+      .csstransforms .cn-wrapper {
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        z-index: 10;
+        margin-top: -13em;
+        margin-left: -13.5em;
+        width: 27em;
+        height: 27em;
+        border-radius: 50%;
+        background: transparent;
+        opacity: 0;
+        transition: all 0.3s ease 0.3s;
+        transform: scale(0.1);
+        pointer-events: none;
+        overflow: hidden;
+      }
+
+      /*cover to prevent extra space of anchors from being clickable*/
+      .csstransforms .cn-wrapper:after {
+        content: ".";
+        display: block;
+        font-size: 2em;
+        width: 6.2em;
+        height: 6.2em;
+        position: absolute;
+        left: 50%;
+        margin-left: -3.1em;
+        top: 50%;
+        margin-top: -3.1em;
+        border-radius: 50%;
+        z-index: 10;
+        color: transparent;
+      }
+
+      .csstransforms .opened-nav {
+        border-radius: 50%;
+        opacity: 1;
+        transition: all 0.3s ease;
+        transform: scale(1);
+        pointer-events: auto;
+      }
+
+      .csstransforms .cn-wrapper li {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        overflow: hidden;
+        margin-top: -1.3em;
+        margin-left: -10em;
+        width: 10em;
+        height: 10em;
+        font-size: 1.5em;
+        transition: all 0.3s ease;
+        transform: rotate(75deg) skew(62deg);
+        transform-origin: 100% 100%;
+        pointer-events: none;
+      }
+
+      .csstransforms .cn-wrapper li a {
+        position: absolute;
+
+        right: -7.25em;
+        bottom: -7.25em;
+        display: block;
+        width: 14.5em;
+        height: 14.5em;
+        border-radius: 50%;
+        background: #429a67;
+        background: -webkit-radial-gradient(transparent 35%, #429a67 35%);
+        background: -moz-radial-gradient(transparent 35%, #429a67 35%);
+        background: radial-gradient(transparent 35%, #429a67 35%);
+        color: #fff;
+        text-align: center;
+        text-decoration: none;
+        font-size: 1.2em;
+        line-height: 2;
+        transform: skew(-62deg) rotate(-75deg) scale(1);
+        backface-visibility: hidden;
+        pointer-events: auto;
+      }
+
+      .csstransforms .cn-wrapper li a span {
+        position: relative;
+        top: 1em;
+        display: block;
+        font-size: 0.5em;
+        font-weight: 700;
+        text-transform: uppercase;
+      }
+
+      .csstransforms .cn-wrapper li a:hover,
+      .csstransforms .cn-wrapper li a:active,
+      .csstransforms .cn-wrapper li a:focus {
+        background: radial-gradient(transparent 35%, #449e6a 35%);
+      }
+
+      .csstransforms .opened-nav li {
+        transition: all 0.3s ease 0.3s;
+      }
+
+      .csstransforms .opened-nav li:first-child {
+        transform: skew(62deg);
+      }
+
+      .csstransforms .opened-nav li:nth-child(2) {
+        transform: rotate(30deg) skew(62deg);
+      }
+
+      .csstransforms .opened-nav li:nth-child(3) {
+        transform: rotate(60deg) skew(62deg);
+      }
+
+      .csstransforms .opened-nav li:nth-child(4) {
+        transform: rotate(90deg) skew(62deg);
+      }
+
+      .csstransforms .opened-nav li:nth-child(5) {
+        transform: rotate(120deg) skew(62deg);
+      }
+
+      .csstransforms .opened-nav li:nth-child(6) {
+        transform: rotate(150deg) skew(62deg);
+      }
+
+      .csstransforms .opened-nav li:nth-child(7) {
+        transform: rotate(180deg) skew(62deg);
+      }
+
+      .csstransforms .opened-nav li:nth-child(8) {
+        transform: rotate(210deg) skew(62deg);
+      }
+      .csstransforms .opened-nav li:nth-child(9) {
+        transform: rotate(240deg) skew(62deg);
+      }
+      .csstransforms .opened-nav li:nth-child(10) {
+        transform: rotate(270deg) skew(62deg);
+      }
+      .csstransforms .opened-nav li:nth-child(11) {
+        transform: rotate(300deg) skew(62deg);
+      }
+      .csstransforms .opened-nav li:nth-child(12) {
+        transform: rotate(330deg) skew(62deg);
+      }
+      .no-csstransforms .cn-wrapper {
+        overflow: hidden;
+        margin: 10em auto;
+        padding: 0.5em;
+        text-align: center;
+      }
+
+      .no-csstransforms .cn-wrapper ul {
+        display: inline-block;
+      }
+
+      .no-csstransforms .cn-wrapper li {
+        float: left;
+        width: 5em;
+        height: 5em;
+        background-color: #fff;
+        text-align: center;
+        font-size: 1em;
+        line-height: 5em;
+      }
+
+      .no-csstransforms .cn-wrapper li a {
+        display: block;
+        width: 100%;
+        height: 100%;
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .no-csstransforms .cn-wrapper li a:hover,
+      .no-csstransforms .cn-wrapper li a:active,
+      .no-csstransforms .cn-wrapper li a:focus {
+        background-color: #f8f8f8;
+      }
+
+      .no-csstransforms .cn-wrapper li.active a {
+        background-color: #6f325c;
+        color: #fff;
+      }
+
+      .no-csstransforms .cn-button {
+        display: none;
+      }
+
+      @media only screen and (max-width: 620px) {
+        .no-csstransforms li {
+          width: 4em;
+          height: 4em;
+          line-height: 4em;
+        }
+      }
+
+      @media only screen and (max-width: 500px) {
+        .no-ccstransforms .cn-wrapper {
+          padding: 0.5em;
+        }
+
+        .no-csstransforms .cn-wrapper li {
+          width: 4em;
+          height: 4em;
+          font-size: 0.9em;
+          line-height: 4em;
+        }
+      }
+
+      @media only screen and (max-width: 480px) {
+        .csstransforms .cn-wrapper {
+          font-size: 0.68em;
+        }
+
+        .cn-button {
+          font-size: 1em;
+        }
+      }
+
+      @media only screen and (max-width: 420px) {
+        .no-csstransforms .cn-wrapper li {
+          width: 100%;
+          height: 3em;
+          line-height: 3em;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="csstransforms container">
+      <div class="component">
+        <h2>Hi</h2>
+        <!-- Start Nav Structure -->
+        <button class="cn-button" id="cn-button">Menu</button>
+        <div class="cn-wrapper" id="cn-wrapper">
+          <ul>
+            <li>
+              <a href="#">
+                <span>Home</span>
+                <svg
+                  class="caticon"
+                  version="1.1"
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink"
+                  x="0px"
+                  y="0px"
+                  width="35px"
+                  height="70px"
+                  viewBox="0 0 512 512"
+                  enable-background="new 0 0 50 50"
+                  xml:space="preserve"
+                >
+                  <path
+                    fill="white"
+                    id="shop-3-icon"
+                    d="M79.792,217.25v235h352.75v-235H79.792z M397.542,381.75h-282.75v-129.5h282.75V381.75z M220.62,59.75
+                                          l-17.798,85.332h-0.081v17.34c0,18.314-14.847,33.161-33.161,33.161s-33.16-14.847-33.16-33.161v-17.34l50.841-85.332H220.62z
+                                          M168.232,59.75l-51.91,85.332v17.34c0,18.314-14.847,33.161-33.161,33.161S50,180.736,50,162.422v-17.34l83.666-85.332H168.232z
+                                          M462,145.082v17.34c0,18.314-14.847,33.161-33.161,33.161s-33.161-14.847-33.161-33.161v-17.34l-51.91-85.332h34.566L462,145.082z
+                                          M289.08,145.082h0.081v17.34c0,18.314-14.847,33.161-33.161,33.161s-33.161-14.847-33.161-33.161v-17.34h0.081l16.729-85.332
+                                          h32.703L289.08,145.082z M324.739,59.75l50.841,85.332v17.34c0,18.314-14.846,33.161-33.16,33.161s-33.161-14.847-33.161-33.161
+                                          v-17.34h-0.081L291.38,59.75H324.739z"
+                  />
+                </svg>
+              </a>
+            </li>
+            <li>
+              <a href="#"><span>Furniture</span></a>
+            </li>
+            <li>
+              <a href="#"><span>Transport</span></a>
+            </li>
+            <li>
+              <a href="#"><span>Gift</span></a>
+            </li>
+            <li>
+              <a href="#"><span>Clothes</span></a>
+            </li>
+            <li>
+              <a href="#"><span>Games</span></a>
+            </li>
+            <li>
+              <a href="#"><span>Stationary</span></a>
+            </li>
+            <li>
+              <a href="#"><span>Toys</span></a>
+            </li>
+            <li>
+              <a href="#"><span>Books</span></a>
+            </li>
+            <li>
+              <a href="#"><span>Login</span></a>
+            </li>
+            <li>
+              <a href="#"><span>Register</span></a>
+            </li>
+            <li>
+              <a href="#"><span>Sell</span></a>
+            </li>
+          </ul>
+        </div>
+        <!-- End of Nav Structure -->
+      </div>
+    </div>
+    <!-- /container -->
+    <script>
+      (function () {
+        var button = document.getElementById("cn-button"),
+          wrapper = document.getElementById("cn-wrapper");
+
+        //open and close menu when the button is clicked
+        var open = false;
+        button.addEventListener("click", handler, false);
+
+        function handler() {
+          if (!open) {
+            this.innerHTML = "Close";
+            classie.add(wrapper, "opened-nav");
+          } else {
+            this.innerHTML = "Menu";
+            classie.remove(wrapper, "opened-nav");
+          }
+          open = !open;
+        }
+        function closeWrapper() {
+          classie.remove(wrapper, "opened-nav");
+        }
+      })();
+      /*!
+       * classie - class helper functions
+       * from bonzo https://github.com/ded/bonzo
+       *
+       * classie.has( elem, 'my-class' ) -> true/false
+       * classie.add( elem, 'my-new-class' )
+       * classie.remove( elem, 'my-unwanted-class' )
+       * classie.toggle( elem, 'my-class' )
+       */
+
+      /*jshint browser: true, strict: true, undef: true */
+      /*global define: false */
+
+      (function (window) {
+        "use strict";
+
+        // class helper functions from bonzo https://github.com/ded/bonzo
+
+        function classReg(className) {
+          return new RegExp("(^|\\s+)" + className + "(\\s+|$)");
+        }
+
+        // classList support for class management
+        // altho to be fair, the api sucks because it won't accept multiple classes at once
+        var hasClass, addClass, removeClass;
+
+        if ("classList" in document.documentElement) {
+          hasClass = function (elem, c) {
+            return elem.classList.contains(c);
+          };
+          addClass = function (elem, c) {
+            elem.classList.add(c);
+          };
+          removeClass = function (elem, c) {
+            elem.classList.remove(c);
+          };
+        } else {
+          hasClass = function (elem, c) {
+            return classReg(c).test(elem.className);
+          };
+          addClass = function (elem, c) {
+            if (!hasClass(elem, c)) {
+              elem.className = elem.className + " " + c;
+            }
+          };
+          removeClass = function (elem, c) {
+            elem.className = elem.className.replace(classReg(c), " ");
+          };
+        }
+
+        function toggleClass(elem, c) {
+          var fn = hasClass(elem, c) ? removeClass : addClass;
+          fn(elem, c);
+        }
+
+        var classie = {
+          // full names
+          hasClass: hasClass,
+          addClass: addClass,
+          removeClass: removeClass,
+          toggleClass: toggleClass,
+          // short names
+          has: hasClass,
+          add: addClass,
+          remove: removeClass,
+          toggle: toggleClass,
+        };
+
+        // transport
+        if (typeof define === "function" && define.amd) {
+          // AMD
+          define(classie);
+        } else {
+          // browser global
+          window.classie = classie;
+        }
+      })(window);
+      // EventListener | @jon_neal | //github.com/jonathantneal/EventListener
+      !window.addEventListener &&
+        window.Element &&
+        (function () {
+          function addToPrototype(name, method) {
+            Window.prototype[name] =
+              HTMLDocument.prototype[name] =
+              Element.prototype[name] =
+                method;
+          }
+
+          var registry = [];
+
+          addToPrototype("addEventListener", function (type, listener) {
+            var target = this;
+
+            registry.unshift({
+              __listener: function (event) {
+                event.currentTarget = target;
+                event.pageX =
+                  event.clientX + document.documentElement.scrollLeft;
+                event.pageY =
+                  event.clientY + document.documentElement.scrollTop;
+                event.preventDefault = function () {
+                  event.returnValue = false;
+                };
+                event.relatedTarget = event.fromElement || null;
+                event.stopPropagation = function () {
+                  event.cancelBubble = true;
+                };
+                event.relatedTarget = event.fromElement || null;
+                event.target = event.srcElement || target;
+                event.timeStamp = +new Date();
+
+                listener.call(target, event);
+              },
+              listener: listener,
+              target: target,
+              type: type,
+            });
+
+            this.attachEvent("on" + type, registry[0].__listener);
+          });
+
+          addToPrototype("removeEventListener", function (type, listener) {
+            for (
+              var index = 0, length = registry.length;
+              index < length;
+              ++index
+            ) {
+              if (
+                registry[index].target == this &&
+                registry[index].type == type &&
+                registry[index].listener == listener
+              ) {
+                return this.detachEvent(
+                  "on" + type,
+                  registry.splice(index, 1)[0].__listener
+                );
+              }
+            }
+          });
+
+          addToPrototype("dispatchEvent", function (eventObject) {
+            try {
+              return this.fireEvent("on" + eventObject.type, eventObject);
+            } catch (error) {
+              for (
+                var index = 0, length = registry.length;
+                index < length;
+                ++index
+              ) {
+                if (
+                  registry[index].target == this &&
+                  registry[index].type == eventObject.type
+                ) {
+                  registry[index].call(this, eventObject);
+                }
+              }
+            }
+          });
+        })();
+    </script>
+  </body>
+</html>

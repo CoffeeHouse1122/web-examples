@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>动画 - 拉链</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        height: 90vh;
+        font-size: 16px;
+        background-color: hsl(45, 35%, 80%);
+      }
+
+      .zippertext {
+        font-family: "Roboto Mono", serif;
+        font-size: 0.5rem;
+        font-optical-sizing: auto;
+        font-weight: 400;
+        font-style: normal;
+        text-transform: uppercase;
+        margin-top: 30px;
+      }
+
+      .content {
+        position: relative;
+      }
+
+      #theZipper {
+        position: relative;
+        z-index: 1;
+      }
+
+      .zipper {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) rotate(-90deg);
+        z-index: 2;
+        width: 300px;
+      }
+
+      input[type="range"] {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 100%;
+        cursor: pointer;
+        outline: none;
+        overflow: hidden;
+        background-color: transparent;
+      }
+
+      input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        height: 30px;
+        width: 10px;
+        border-radius: 2px;
+        background-color: #000;
+      }
+
+      input[type="range"]::-moz-range-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        height: 30px;
+        width: 10px;
+        border-radius: 2px;
+        background-color: #000;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="content">
+      <canvas id="theZipper" width="300" height="300"></canvas>
+      <input
+        type="range"
+        min="1"
+        max="300"
+        value="1"
+        class="zipper"
+        id="zipperSlider"
+      />
+    </div>
+    <p class="zippertext">The zipper is <span id="sliderValue"></span>.</p>
+    <script>
+      // Setup
+      const canvas = document.getElementById("theZipper");
+      const ctx = canvas.getContext("2d");
+      const zipperSlider = document.getElementById("zipperSlider");
+      const maxslider = zipperSlider.max;
+      const output = document.getElementById("sliderValue");
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = "#000";
+
+      // Draw the zipper
+      function drawZipper() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        let xLeft = 145;
+        let xRight = 145;
+        let zipperPercentage = zipperSlider.value / maxslider;
+        let curve = 1 - zipperPercentage;
+
+        for (i = 0; i < 50; i++) {
+          const y = 299 - i * 6;
+          ctx.beginPath();
+          ctx.moveTo(xLeft, y);
+          ctx.lineTo(xLeft + 10, y);
+          ctx.moveTo(xRight, y);
+          ctx.lineTo(xRight + 10, y);
+          ctx.stroke();
+
+          if (i >= zipperPercentage * 50) {
+            const xOffset = curve * Math.pow(1.04, i);
+            xLeft -= xOffset;
+            xRight += xOffset;
+          }
+        }
+
+        // Update text
+        const percentage = Math.round(zipperPercentage * 100);
+        let text = "Open";
+        if (percentage > 70) text = "Almost closed";
+        if (percentage === 100) text = "Closed";
+        output.textContent = text;
+      }
+
+      zipperSlider.addEventListener("input", drawZipper);
+      drawZipper();
+    </script>
+  </body>
+</html>

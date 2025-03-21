@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>文字故障效果</title>
+    <style>
+      body {
+        margin: 0;
+        background: #341f97;
+      }
+
+      .glitch {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: #fff;
+        font-size: 130px;
+        text-decoration: none;
+        font-family: "Poppins", sans-serif;
+        font-weight: 700;
+      }
+
+      .glitch:before,
+      .glitch:after {
+        content: "GLITCH";
+        opacity: 0.8;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+
+      .glitch:before {
+        color: #0ff;
+        z-index: -1;
+      }
+
+      .glitch:after {
+        color: #f0f;
+        z-index: -2;
+      }
+
+      .glitch:hover:before {
+        animation: glitch 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both
+        infinite;
+      }
+
+      .glitch:hover:after {
+        animation: glitch 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) reverse
+        both infinite;
+      }
+
+      .glitch {
+
+        &:hover {
+          &:before {
+            animation: glitch 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both
+              infinite;
+          }
+          &:after {
+            animation: glitch 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) reverse
+              both infinite;
+          }
+        }
+      }
+
+      @keyframes glitch {
+        0% {
+          -webkit-transform: translate(0);
+          transform: translate(0);
+        }
+        20% {
+          -webkit-transform: translate(-5px, 5px);
+          transform: translate(-5px, 5px);
+          transform: skewX(10deg);
+        }
+        40% {
+          -webkit-transform: translate(-5px, -5px);
+          transform: translate(-5px, -5px);
+        }
+        60% {
+          -webkit-transform: translate(5px, 5px);
+          transform: translate(5px, 5px);
+        }
+        80% {
+          -webkit-transform: translate(5px, -5px);
+          transform: translate(5px, -5px);
+        }
+        to {
+          -webkit-transform: translate(0);
+          transform: translate(0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <a class="glitch" href="#">GLITCH</a>
+  </body>
+</html>

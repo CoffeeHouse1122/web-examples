@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simple DOM Raycasting</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0px;
+        background: #333;
+        font-family: "DM Serif Text", serif;
+        font-weight: 300;
+        font-style: normal;
+      }
+
+      div.wall {
+        margin: 50px 5%;
+        font-size: 250%;
+        line-height: 0%;
+        display: block;
+        text-shadow: 0px 1px 1px #111;
+        color: #ffffd1;
+        position: relative;
+      }
+
+      div.wall span,
+      div.wall em {
+        list-style: none;
+        display: block;
+        position: relative;
+        float: left;
+        width: auto;
+        min-width: 10px;
+        height: 50px;
+      }
+
+      div.wall span {
+        transition: color 0.2s ease, transform 0.2s ease;
+      }
+
+      div.wall span.active {
+        color: darken(#ffffd1, 10%);
+        transform: scale(1.9);
+      }
+
+      div.wall span.active {
+        color: darken(#ffffd1, 10%);
+        transform: scale(1.9);
+      }
+
+      div.wall span:has(+ span.active) {
+        color: lighten(#ffffd1, 60%);
+        transform: scale(2.5);
+        filter: blur(4px);
+      }
+
+      div.wall span.active + span {
+        color: lighten(#ffffd1, 45%);
+        transform: scale(1.7);
+        filter: blur(2px);
+      }
+
+      div.wall span.active + span + span + span,
+      div.wall span.active + span + span {
+        color: lighten(#ffffd1, 30%);
+        transform: scale(1.2);
+        filter: blur(4px);
+        transition: color 0.2s ease, transform 0.4s ease-in-out;
+      }
+
+      div.wall em {
+        width: 13px;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="wall">
+      In the quiet corners of our daily hustle, moments of serenity slip through like whispers in the wind.  They carry the promise of unspoken stories, waiting to be discovered in the creases of forgotten pages or the rustle of autumn leaves.  Life, with its intricate tapestry of highs and lows, weaves these fleeting instances into the fabric of our existence, reminding us of the beauty in the mundane.
+    </div>
+  </body>
+  <script>
+    (function () {
+      const $cl = (_cl) => document.getElementsByClassName(_cl)[0];
+      const $q = (el, bool) =>
+        bool ? document.querySelectorAll(el) : document.querySelector(el);
+      const $wall = $cl("wall");
+      const $txt = $wall.innerHTML.toString();
+      const $len = $txt.length;
+
+      const setActive = (indx) => {
+        if ($cl("active")) $cl("active").classList.remove("active");
+        if ($cl("sp__" + indx)) $cl("sp__" + indx).classList.add("active");
+      };
+
+      const makeEl = (bool, char, indx) => {
+        let $el = bool
+          ? document.createElement("span")
+          : document.createElement("em");
+        if (bool) {
+          $el.className = "sp sp__" + indx;
+          $el.style.setProperty("--i", indx);
+          if (indx == 0) $el.className = "active sp sp__" + indx;
+        }
+        $el.append(char);
+        return $el;
+      };
+
+      $wall.innerHTML = "";
+
+      Array.from($txt).forEach((chr, i) => {
+        let $bool = $txt.charAt(i) != " " ? true : false;
+        $wall.append(makeEl($bool, $txt.charAt(i), i));
+      });
+
+      let $i = 0;
+      setInterval(() => {
+        $i = $i < $len ? $i + 1 : 0;
+        setActive($i);
+      }, 30);
+    })();
+  </script>
+</html>

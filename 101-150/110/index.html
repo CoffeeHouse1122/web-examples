@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GSAP Scroll Fixed Gallery</title>
+    <style>
+      * {
+        margin: 0;
+        box-sizing: border-box;
+      }
+
+      .wrapper {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        height: 100lvh;
+      }
+
+      .slide {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        font-size: 5rem;
+        font-family: sans-serif;
+
+        /*   isolation: isolate; */
+
+        overflow: hidden;
+      }
+
+      .slide h2 {
+        mix-blend-mode: hard-light;
+        color: #fff;
+        text-shadow: 0px 4px 4px black;
+      }
+
+      img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        /*   z-index: -1; */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="js-wrapper wrapper">
+      <section class="js-slide slide">
+        <div class="js-slideContent">
+          <img src="./01.png" alt="" />
+          <h2>Slide 1</h2>
+        </div>
+      </section>
+      <section class="js-slide slide">
+        <div class="js-slideContent">
+          <img src="./02.png" alt="" />
+          <h2>Slide 2</h2>
+        </div>
+      </section>
+      <section class="js-slide slide">
+        <img src="./03.png" alt="" />
+        <div class="js-slideContent">
+          <h2>Slide 3</h2>
+        </div>
+      </section>
+      <section class="js-slide slide">
+        <img src="./01.png" alt="" />
+        <div class="js-slideContent">
+          <h2>Slide 4</h2>
+        </div>
+      </section>
+      <section class="js-slide slide">
+        <img src="./02.png" alt="" />
+        <div class="js-slideContent">
+          <h2>Slide 5</h2>
+        </div>
+      </section>
+    </div>
+  </body>
+  <script src="./gsap.min.js"></script>
+  <script src="./ScrollTrigger.min.js"></script>
+  <script>
+    const wrapperEl = document.querySelector(".js-wrapper");
+    const slides = document.querySelectorAll(".js-slide");
+
+    // Initial State
+    slides.forEach(function (slide, idx) {
+      if (idx === 0) return;
+      const slideImage = slide.querySelector("img");
+      gsap.set(slide, { yPercent: 100 });
+      gsap.set(slideImage, { yPercent: -100 });
+    });
+
+    const scroll = () => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: wrapperEl,
+          start: "top top",
+          end: `+=${slides.length * 100}%`,
+          scrub: true,
+          pin: true,
+          // markers: true
+        },
+        defaults: { ease: "none" },
+      });
+
+      slides.forEach(function (slide, idx) {
+        if (idx === slides.length - 1) return;
+        const slideImg = slide.querySelector("img");
+        const nextSlide = slides[idx + 1];
+        const nextSlideImg = slides[idx + 1].querySelector("img");
+        tl.to(slide, { yPercent: -100 })
+          .to(slideImg, { yPercent: 100 }, "<")
+
+          .to(nextSlide, { yPercent: 0 }, "<")
+          .to(nextSlideImg, { yPercent: 0 }, "<");
+      });
+    };
+
+    scroll();
+  </script>
+</html>

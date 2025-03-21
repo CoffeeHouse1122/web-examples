@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"
+    />
+
+    <title>17</title>
+    <!-- 引入字体图标库 -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        /* 100%窗口宽高 */
+        height: 100vh;
+        /* 弹性布局 水平+垂直居中 */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        /* 渐变背景 */
+        background: linear-gradient(to top, #c1dfc4, #deecdd);
+      }
+      .container {
+        width: 681px;
+        height: 384px;
+        /* 阴影 */
+        box-shadow: 0 0 50px rgba(0, 0, 0, 0.25);
+        /* 相对定位 */
+        position: relative;
+        /* 溢出隐藏 */
+        overflow: hidden;
+      }
+      .slider {
+        /* 绝对定位 */
+        position: absolute;
+        width: 400%;
+        height: 100%;
+        display: inline-flex;
+        overflow: hidden;
+      }
+      svg {
+        width: 681px;
+        height: 384px;
+        position: absolute;
+        /* 设置堆叠顺序 */
+        z-index: 3;
+      }
+      /* 左右按钮的统一样式 */
+      .btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: transparent;
+        border: 1px solid #949494;
+        color: #949494;
+        font-size: 25px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+        /* 垂直居中 */
+        position: absolute;
+        top: 50%;
+        z-index: 4;
+        transform: translateY(-50%);
+        cursor: pointer;
+        /* 设置过渡效果 */
+        transition: 0.5s;
+      }
+      .btn:hover {
+        background-color: #c1dfc4;
+      }
+      .btn.btn-left {
+        left: 13px;
+      }
+      .btn.btn-right {
+        left: 628px;
+      }
+      /* 波浪圆圈 */
+      circle {
+        /* 取消填充 */
+        fill: none;
+        /* 定义一条浅绿色的线 */
+        stroke: #c1dfc4;
+        /* 线的厚度 */
+        stroke-width: 0;
+        /* 设置过渡动画时长 */
+        transition: 0.3s;
+        /* 设置过渡动画为线性动画 */
+        transition-timing-function: linear;
+      }
+      .svg1 .circle1,
+      .svg2 .circle1 {
+        transition-delay: 0.05s;
+      }
+      .svg1 .circle2,
+      .svg2 .circle2 {
+        transition-delay: 0.1s;
+      }
+      .svg1 .circle3,
+      .svg2 .circle3 {
+        transition-delay: 0.15s;
+      }
+      .svg1 .circle4,
+      .svg2 .circle4 {
+        transition-delay: 0.2s;
+      }
+      .svg1 .circle5,
+      .svg2 .circle5 {
+        transition-delay: 0.25s;
+      }
+      .svg1 .circle6,
+      .svg2 .circle6 {
+        transition-delay: 0.3s;
+      }
+      .svg1 .circle7,
+      .svg2 .circle7 {
+        transition-delay: 0.35s;
+      }
+      .svg1 .circle8,
+      .svg2 .circle8 {
+        transition-delay: 0.4s;
+      }
+      .svg1 .circle9,
+      .svg2 .circle9 {
+        transition-delay: 0.45s;
+      }
+      /* 焦点图的统一样式 */
+      .slide {
+        position: absolute;
+        background-position: center;
+        background-size: cover;
+        width: 25%;
+        height: 100%;
+        z-index: 1;
+        transition: 1.4s;
+      }
+      /* 分别设置焦点图 */
+      .slide1 {
+        background-image: url("./01.png");
+      }
+      .slide2 {
+        background-image: url("./02.png");
+      }
+      .slide3 {
+        background-image: url("./01.png");
+      }
+      .slide4 {
+        background-image: url("./02.png");
+      }
+      /* 切换时图片放大 */
+      .scale {
+        transform: scale(1.3);
+      }
+      /* 设置当前图的堆叠顺序 */
+      .active {
+        z-index: 2;
+      }
+      /* 设置波浪圆圈的厚度 */
+      .streak {
+        stroke-width: 82px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="slider">
+        <div class="btn btn-left">
+          <i class="fa fa-angle-left"></i>
+        </div>
+        <div class="btn btn-right">
+          <i class="fa fa-angle-right"></i>
+        </div>
+        <svg class="svg1">
+          <!-- cx：圆点的x坐标  cy：圆点的y坐标  r：圆的半径 -->
+          <circle class="circle1" cx="34px" cy="50%" r="20" />
+          <circle class="circle2" cx="34px" cy="50%" r="100" />
+          <circle class="circle3" cx="34px" cy="50%" r="180" />
+          <circle class="circle4" cx="34px" cy="50%" r="260" />
+          <circle class="circle5" cx="34px" cy="50%" r="340" />
+          <circle class="circle6" cx="34px" cy="50%" r="420" />
+          <circle class="circle7" cx="34px" cy="50%" r="500" />
+          <circle class="circle8" cx="34px" cy="50%" r="580" />
+          <circle class="circle9" cx="34px" cy="50%" r="660" />
+        </svg>
+        <svg class="svg2">
+          <!-- cx：圆点的x坐标  cy：圆点的y坐标  r：圆的半径 -->
+          <circle class="circle1" cx="648px" cy="50%" r="20" />
+          <circle class="circle2" cx="648px" cy="50%" r="100" />
+          <circle class="circle3" cx="648px" cy="50%" r="180" />
+          <circle class="circle4" cx="648px" cy="50%" r="260" />
+          <circle class="circle5" cx="648px" cy="50%" r="340" />
+          <circle class="circle6" cx="648px" cy="50%" r="420" />
+          <circle class="circle7" cx="648px" cy="50%" r="500" />
+          <circle class="circle8" cx="648px" cy="50%" r="580" />
+          <circle class="circle9" cx="648px" cy="50%" r="660" />
+        </svg>
+        <div class="slide slide1 active"></div>
+        <div class="slide slide2"></div>
+        <div class="slide slide3"></div>
+        <div class="slide slide4"></div>
+      </div>
+    </div>
+  </body>
+  <script>
+    // 要操作的元素
+    let left = document.querySelector(".btn-left"), //左按钮
+      right = document.querySelector(".btn-right"); //右按钮
+    // 定义变量
+    let curpage = 1, //当前图下标
+      sliding = false, //防止多次切换
+      click = true, //防止多次点击
+      svg = true; //区分svg1和svg2
+
+    // 上一张
+    function prev() {
+      if (click) {
+        if (curpage == 1) curpage = 5;
+        sliding = true;
+        curpage--;
+        svg = true;
+        click = false;
+        for (i = 1; i <= 4; i++) {
+          let a = document.querySelector(".slide" + i);
+          a.classList.add("scale");
+        }
+        setTimeout(() => {
+          change();
+        }, 200);
+        setTimeout(() => {
+          for (i = 1; i <= 4; i++) {
+            let a = document.querySelector(".slide" + i);
+            a.classList.remove("scale");
+          }
+        }, 1400);
+      }
+    }
+
+    // 下一张
+    function next() {
+      if (click) {
+        if (curpage == 4) curpage = 0;
+        sliding = true;
+        curpage++;
+        svg = false;
+        click = false;
+        for (i = 1; i <= 4; i++) {
+          let a = document.querySelector(".slide" + i);
+          a.classList.add("scale");
+        }
+        setTimeout(() => {
+          change();
+        }, 200);
+        setTimeout(() => {
+          for (i = 1; i <= 4; i++) {
+            let a = document.querySelector(".slide" + i);
+            a.classList.remove("scale");
+          }
+        }, 1400);
+      }
+    }
+
+    // 切换焦点图
+    function change() {
+      if (sliding) {
+        sliding = false;
+        if (svg) {
+          for (j = 1; j <= 9; j++) {
+            let a = document.querySelector(".svg1 .circle" + j);
+            a.classList.add("streak");
+          }
+        } else {
+          for (j = 1; j <= 9; j++) {
+            let a = document.querySelector(".svg2 .circle" + j);
+            a.classList.add("streak");
+          }
+        }
+        setTimeout(() => {
+          for (i = 1; i <= 4; i++) {
+            if (i == curpage) {
+              let a = document.querySelector(".slide" + i);
+              a.classList.add("active");
+            } else {
+              let a = document.querySelector(".slide" + i);
+              a.classList.remove("active");
+            }
+          }
+          sliding = true;
+        }, 600);
+        setTimeout(() => {
+          click = true;
+        }, 1700);
+        setTimeout(() => {
+          if (svg) {
+            for (j = 1; j <= 9; j++) {
+              let a = document.querySelector(".svg1 .circle" + j);
+              a.classList.remove("streak");
+            }
+          } else {
+            for (j = 1; j <= 9; j++) {
+              let a = document.querySelector(".svg2 .circle" + j);
+              a.classList.remove("streak");
+            }
+            sliding = true;
+          }
+        }, 850);
+        setTimeout(() => {
+          click = true;
+        }, 1700);
+      }
+    }
+
+    // 绑定左按钮的点击事件
+    left.addEventListener("click", prev);
+    // 绑定右按钮的点击事件
+    right.addEventListener("click", next);
+    // 绑定键盘左右键事件
+    document.addEventListener("keydown", function (e) {
+      if (e.keyCode == 37) {
+        prev();
+      } else if (e.keyCode == 39) {
+        next();
+      }
+    });
+  </script>
+</html>

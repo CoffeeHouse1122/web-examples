@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>日英文字切换动画</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+        scroll-behavior: smooth;
+      }
+      html,
+      body {
+        height: 100%;
+        overflow: hidden;
+      }
+
+      body {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+        background: #1e1e1e;
+      }
+      .tokyo {
+        font-size: 2em;
+        --br: 0em;
+        --sz: 6;
+        --tc: calc(var(--sz) * 0.02em);
+        width: calc(var(--sz) * (8 / 30) * 1em);
+        height: calc(var(--sz) * 1.43em);
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        cursor: pointer;
+        filter: drop-shadow(4px 4px #fff4);
+        --offset: 27%;
+      }
+      .tokyo,
+      .tokyo *,
+      .tokyo *::before,
+      .tokyo *::after {
+        --cb: cubic-bezier(1, -0.69, 0, 1.95);
+        --tf: 0.8s;
+        transition: top var(--tf) var(--cb), bottom var(--tf) var(--cb),
+          left var(--tf) var(--cb), right var(--tf) var(--cb),
+          rotate var(--tf) var(--cb), height var(--tf) var(--cb),
+          width var(--tf) var(--cb), filter var(--tf) var(--cb),
+          transform var(--tf) var(--cb);
+      }
+      .tokyo *,
+      .tokyo *::before,
+      .tokyo *::after {
+        position: absolute;
+        content: "";
+        display: block;
+        pointer-events: none;
+      }
+
+      .tokyo .t {
+        width: 100%;
+        top: 0;
+      }
+      .tokyo .t::before {
+        top: 0;
+        width: 100%;
+        height: var(--tc);
+        background: #fff;
+        border-radius: var(--br);
+      }
+      .tokyo .t::after {
+        border-radius: var(--br);
+        width: 70%;
+        height: var(--tc);
+        background: #fff;
+        left: 0;
+        right: 0;
+        margin: auto;
+        transform: rotate(90deg) translateX(50%);
+      }
+      /* kanji */
+      .tokyo.kanji .t {
+        top: var(--offset);
+      }
+      .tokyo.kanji .t::before {
+        top: calc(var(--sz) * 0.05em);
+      }
+      .tokyo.kanji .t::after {
+        width: 100%;
+      }
+
+      .tokyo .o {
+        border-radius: calc(var(--br) * 0.3);
+        border: var(--tc) solid #fff;
+        width: 100%;
+        left: 0%;
+        height: calc(var(--sz) * 0.22em);
+      }
+      .tokyo .o:nth-child(2) {
+        top: calc(var(--sz) * 0.26em);
+      }
+      /* kanji */
+      .tokyo.kanji .o:nth-child(2) {
+        width: 80%;
+        left: 10%;
+        top: calc((var(--sz) * 0.1em) + var(--offset));
+        height: calc(var(--sz) * 0.1em);
+      }
+
+      .tokyo .k {
+        height: calc(0.22em * var(--sz));
+        width: 100%;
+        top: calc(var(--sz) * 0.58em);
+      }
+      .tokyo .k div {
+        border-radius: var(--br);
+        height: calc(0.22em * var(--sz));
+        width: var(--tc);
+        background: #fff;
+        top: 0%;
+      }
+      .tokyo .k::before {
+        border-radius: var(--br);
+        width: var(--tc);
+        height: 100%;
+        background: #fff;
+        transform: rotate(64deg) translateX(0%) translateY(-50%);
+      }
+      .tokyo .k::after {
+        border-radius: var(--br);
+        width: var(--tc);
+        height: 108%;
+        background: #fff;
+        transform: rotate(114deg) translateX(0%) translateY(-50%);
+      }
+      /* kanji */
+      .tokyo.kanji .k {
+        left: 2%;
+        top: calc((var(--sz) * 0.16em) + var(--offset));
+        transform: rotate(90deg);
+      }
+      .tokyo.kanji .k div {
+        width: calc(var(--tc) * 0.9);
+        height: calc(0.2em * var(--sz));
+        top: 10%;
+      }
+      .tokyo.kanji .k::before {
+        height: 64%;
+        transform: rotate(34deg) translateX(250%) translateY(-42%);
+      }
+      .tokyo.kanji .k::after {
+        height: 64%;
+        transform: rotate(143deg) translateX(9%) translateY(-98%);
+      }
+
+      .tokyo .y {
+        border-radius: var(--br);
+        height: calc(0.33em * var(--sz));
+        width: var(--tc);
+        top: calc(var(--sz) * 0.94em);
+        background: #fff;
+        transform: rotate(52deg) translateY(-47%);
+      }
+      .tokyo .y::before {
+        border-radius: var(--br);
+        height: calc(0.17em * var(--sz));
+        width: var(--tc);
+        background: #fff;
+        transform: rotate(-100deg) translateX(calc(var(--sz) * -0.08em))
+          translateY(calc(var(--sz) * -0.09em));
+      }
+      /* kanji */
+      .tokyo.kanji .y {
+        transform: rotate(90deg) translateY(-44%);
+        height: calc(0.27em * var(--sz));
+        top: calc(var(--sz) * 0.65em);
+      }
+      .tokyo.kanji .y::before {
+        transform: rotate(-90deg) translateX(calc(var(--sz) * -0.11em))
+          translateY(calc(var(--sz) * -0.03em));
+        height: calc(0.05em * var(--sz));
+      }
+
+      .tokyo .o:nth-child(5) {
+        top: calc(var(--sz) * 1.2em);
+        left: 0;
+      }
+      .tokyo .o:nth-child(5) div {
+        border-radius: var(--br);
+        height: 10%;
+        width: calc(0.04em * var(--sz));
+        top: calc(var(--sz) * 0.185em);
+        left: 42%;
+        transform: rotate(0deg) translateY(0%);
+        border-right: calc(var(--tc) / 1.1) solid #fff;
+        border-bottom: calc(var(--tc) / 1.1) solid #fff;
+      }
+      .tokyo .o:nth-child(5) div::before,
+      .tokyo .o:nth-child(5) div::after {
+        background: #fff;
+        border-radius: var(--br);
+        width: var(--tc);
+        height: 0;
+      }
+      /* kanji */
+      .tokyo.kanji .o:nth-child(5) {
+        top: calc(var(--sz) * 0.82em);
+        width: 80%;
+        height: calc(var(--sz) * 0.12em);
+        left: 10%;
+
+        border-radius: calc(var(--br) * 0.3);
+        border: var(--tc) solid #fff;
+      }
+      .tokyo.kanji .o:nth-child(5) div {
+        left: 22%;
+        top: calc(var(--sz) * 0.1em);
+        height: 100%;
+        width: calc(0.06em * var(--sz));
+        border-right: var(--tc) solid #fff;
+        border-bottom: var(--tc) solid #fff;
+      }
+      .tokyo.kanji .o:nth-child(5) div::before {
+        background: #fff;
+        border-radius: var(--br);
+        height: calc(0.08em * var(--sz));
+        transform: rotate(40deg) translateX(calc(var(--sz) * -0.03em))
+          translateY(calc(var(--sz) * 0.033em));
+      }
+      .tokyo.kanji .o:nth-child(5) div::after {
+        height: calc(0.09em * var(--sz));
+        transform: rotate(-50deg) translateX(calc(var(--sz) * 0.08em))
+          translateY(calc(var(--sz) * 0.09em));
+      }
+    </style>
+  </head>
+  <body>
+    <div class="tokyo kanji" onclick="this.classList.toggle('kanji');">
+      <div class="t"></div>
+      <div class="o"></div>
+      <div class="k"><div></div></div>
+      <div class="y"></div>
+      <div class="o"><div></div></div>
+    </div>
+  </body>
+</html>

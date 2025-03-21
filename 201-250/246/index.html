@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>弹窗 - 灯箱模式</title>
+  <style>
+    html:has(dialog[open]) {
+      overflow: hidden;
+      scrollbar-gutter: stable;
+    }
+
+    body {
+      display: grid;
+      place-items: center;
+      font-family: system-ui, sans-serif;
+    }
+
+    main {
+      display: grid;
+      align-items: center;
+      gap: 1rem;
+      padding: 2rem;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      vertical-align: bottom;
+      border-radius: 1rem;
+    }
+
+    lightbox-image:defined {
+      display: block;
+      cursor: zoom-in;
+    }
+
+    lightbox-image {
+      max-width: 250px;
+    }
+
+    dialog {
+      --_gutter: 2rem;
+      padding: 1rem;
+      outline: unset;
+      border: unset;
+      background: unset;
+      max-height: 100vh;
+      cursor: zoom-out;
+
+      &::backdrop {
+        background: #000;
+        opacity: 0.75;
+      }
+
+      form {
+        position: absolute;
+        opacity: 0;
+      }
+
+      img {
+        max-height: calc(100vh - var(--_gutter));
+      }
+    }
+
+    ::view-transition-group(active-lightbox-image) {
+      animation-duration: 300ms;
+      animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+    <lightbox-image dialog-id="lightbox">
+      <img src="./01.png" alt="" />
+    </lightbox-image>
+
+    <lightbox-image dialog-id="lightbox">
+      <img src="./02.png" alt="" />
+    </lightbox-image>
+
+    <lightbox-image dialog-id="lightbox">
+      <img src="./03.png" alt="" />
+    </lightbox-image>
+
+    <lightbox-image dialog-id="lightbox">
+      <img src="./01.png" alt="" />
+    </lightbox-image>
+
+    <lightbox-image dialog-id="lightbox">
+      <img src="./02.png" alt="" />
+    </lightbox-image>
+
+    <lightbox-image dialog-id="lightbox">
+      <img src="./03.png" alt="" />
+    </lightbox-image>
+    <lightbox-image dialog-id="lightbox">
+      <img src="./01.png" alt="" />
+    </lightbox-image>
+
+    <lightbox-image dialog-id="lightbox">
+      <img src="./02.png" alt="" />
+    </lightbox-image>
+  </main>
+
+  <dialog id="lightbox">
+    <form method="dialog">
+      <button>Close lightbox</button>
+    </form>
+  </dialog>
+  <script>
+    class LightBoxImage extends HTMLElement {
+      get dialog() {
+        const attr = this.getAttribute("dialog-id");
+        return document.getElementById(attr);
+      }
+
+      constructor() {
+        super();
+        this.attachShadow({ mode: "open" });
+      }
+
+      connectedCallback() {
+        this.image = this.querySelector("img");
+        this.shadowRoot.innerHTML = this.setupToggle();
+        this.toggle = this.shadowRoot.querySelector("button");
+        this.toggle.addEventListener("click", this);
+        this.dialog.addEventListener("click", this);
+        this.dialog.addEventListener("cancel", this);
+      }
+
+      setupToggle() {
+        return `
+      <style>
+        button {
+          all: unset;
+          outline: revert;
+          display: grid;
+          grid-template-areas: "box";
+        }
+        button > * {
+          grid-area: box;
+        }
+        img {
+          max-width: 100%;
+          height: auto;
+          visibility: hidden;
+        }
+      </style>
+      <button aria-label="Open lightbox">
+        ${this.image.outerHTML}
+        <div>
+          <slot></slot>
+        </div>
+      </button>
+    `;
+      }
+
+      handleEvent(e) {
+        this[`on${e.type}`](e);
+      }
+
+      onclick(e) {
+        if (e.currentTarget === this.toggle) {
+          this.moveImage(() => this.moveImageToTarget());
+        }
+
+        if (e.currentTarget === this.dialog) {
+          this.dialogCallback(e);
+        }
+      }
+
+      // Handle "escape" key dialog event
+      oncancel(e) {
+        this.dialogCallback(e);
+      }
+
+      dialogCallback(e) {
+        if (this.dialog.contains(this.image)) {
+          e.preventDefault();
+          this.moveImage(() => this.moveImageBack());
+        }
+      }
+
+      moveImage(fn) {
+        if (!document.startViewTransition) {
+          fn();
+        } else {
+          this.handleViewTransition(fn);
+        }
+      }
+
+      async handleViewTransition(fn) {
+        this.image.style.viewTransitionName = "active-lightbox-image";
+
+        const transition = document.startViewTransition(() => fn());
+
+        try {
+          await transition.finished;
+        } finally {
+          this.image.style.removeProperty("view-transition-name");
+        }
+      }
+
+      moveImageToTarget() {
+        this.dialog.append(this.image);
+        this.dialog.showModal();
+      }
+
+      moveImageBack(e) {
+        this.append(this.image);
+        this.dialog.close();
+      }
+    }
+
+    customElements.define("lightbox-image", LightBoxImage);
+  </script>
+</body>
+
+</html>

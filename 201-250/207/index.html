@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Splitting - 边框文字滚动</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css?family=Inconsolata:700");
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        overflow: hidden;
+        min-height: 100vh;
+        background-color: black;
+        display: flex;
+        flex-wrap: wrap;
+        color: white;
+      }
+
+      h2 {
+        font-family: Inconsolata, monospace;
+        font-size: 1.8rem;
+        text-transform: uppercase;
+        width: 515px;
+        height: 168px;
+      }
+
+      .char {
+        --offset: calc(var(--char-index) * 1rem);
+        offset-path: path("M0 0 l1152 0 l0 648 l -1152 0 Z");
+
+        offset-distance: var(--offset);
+        position: absolute;
+        animation: move 30000ms infinite linear var(--delay, 0ms);
+      }
+
+      @keyframes move {
+        100% {
+          offset-distance: calc(var(--offset) + 250rem);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!--250 characters for full loop-->
+    <!--In pairs of 250, 2, 5, 10, 25, 50, 125-->
+    <h2 data-splitting>
+      GHOSTCLUB GHOSTCLUB GHOSTCLUB GHOSTCLUB GHOSTCLUB GHOSTCLUB GHOSTCLUB
+      GHOSTCLUB GHOSTCLUB GHOSTCLUB GHOSTCLUB GHOSTCLUB GHOSTCLUB GHOSTCLUB
+      GHOSTCLUB GHOSTCLUB GHOSTCLUB GHOSTCLUB GHOSTCLUB GHOSTCLUB GHOSTCLUB
+      GHOSTCLUB GHOSTCLUB GHOSTCLUB GHOSTCLUB
+    </h2>
+    <script src="./splitting.min.js"></script>
+    <script>
+      Splitting({
+        whitespace: true,
+      });
+    </script>
+  </body>
+</html>

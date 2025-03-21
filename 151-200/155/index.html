@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sine & Cosine Visualized</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        --border: calc(1vmin / 4);
+        --sine-ease: cubic-bezier(0.37, 0, 0.63, 1);
+        --dur: 4s;
+        --size: 40vmin;
+        --gap: 4vmin;
+        background-color: #fcecc9;
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transform: translate3d(0, 0, 0);
+        overflow: hidden;
+      }
+
+      .grid {
+        position: relative;
+        display: grid;
+        grid-template:
+          "c y" auto
+          "x b" auto
+          / auto auto;
+        gap: var(--gap);
+        animation: var(--dur) var(--sine-ease) calc(-0.5 * var(--dur)) infinite
+            alternate x,
+          var(--dur) var(--sine-ease) infinite alternate y,
+          calc(var(--dur) * 2) linear infinite rot;
+      }
+
+      .circle {
+        --color: rgb(123, 0, 126);
+        --top: calc(var(--y) * 100%);
+        --left: calc(var(--x) * 100%);
+        grid-area: c;
+        height: var(--size);
+        width: var(--size);
+        background-color: var(--color);
+        border: var(--border) solid var(--color);
+        border-radius: 50%;
+
+        &:after {
+          height: calc(var(--size) * 0.5);
+          width: var(--border);
+          background-color: #fcecc9;
+          left: 50%;
+          top: 0;
+          transform-origin: 50% 100%;
+          transform: rotate(calc(var(--rot) * 1turn));
+        }
+      }
+
+      .x-bar {
+        --color: rgb(126, 178, 221);
+        --dim: var(--y);
+        --top: 50%;
+        --left: calc(var(--x) * 100%);
+        grid-area: x;
+        height: var(--border);
+        width: var(--size);
+        background-color: var(--color);
+
+        &:after {
+          left: calc(var(--x) * 100%);
+          bottom: 0;
+          height: var(--length);
+          width: var(--width);
+          transform: translate(-50%, 0);
+        }
+      }
+
+      .x-wave {
+        grid-area: x;
+        top: 0;
+        background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 2' preserveAspectRatio='none'><path fill='rgb(126, 178, 221)' d='M 0 0 C 0 .37, 1 .63, 1 1 C 1 1.37, 0 1.63, 0 2 Z'></path></svg>");
+        background-size: 100% 200%;
+        background-position: top
+          calc(var(--size) * 0.5 + (var(--rot) * 2 * var(--size))) center;
+        background-repeat: repeat-y;
+        border-radius: 0 0 calc(var(--size) * 0.125) calc(var(--size) * 0.125);
+      }
+
+      .y-bar {
+        --color: rgb(249, 57, 67);
+        --dim: var(--x);
+        --top: calc(var(--y) * 100%);
+        --left: 50%;
+        grid-area: y;
+        width: var(--border);
+        height: var(--size);
+        background-color: var(--color);
+
+        &:after {
+          top: calc(var(--y) * 100%);
+          right: 50%;
+          width: var(--length);
+          height: var(--width);
+          transform: translate(0, -50%);
+        }
+      }
+
+      .y-wave {
+        grid-area: y;
+        left: 0;
+        background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 2 1' preserveAspectRatio='none'><path fill='rgb(249, 57, 67)' d='M 0 0 C .37 0, .63 1, 1 1 C 1.37 1, 1.63 0, 2 0 Z'></path></svg>");
+        background-size: 200% 100%;
+        background-position: center left calc(var(--rot) * 2 * var(--size));
+        background-repeat: repeat-x;
+        border-radius: 0 calc(var(--size) * 0.125) calc(var(--size) * 0.125) 0;
+      }
+
+      .xy-wave {
+        grid-area: b;
+        left: 0;
+        background-blend-mode: color-burn;
+        background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 2 1' preserveAspectRatio='none'><path fill='rgb(249, 57, 67)' d='M 0 1 C .37 1, .63 0, 1 0 C 1.37 0, 1.63 1, 2 1 Z'></path></svg>"),
+          url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 2 1' preserveAspectRatio='none'><path fill='rgb(126, 178, 221)' d='M 0 1 C .37 1, .63 0, 1 0 C 1.37 0, 1.63 1, 2 1 Z'></path></svg>");
+        background-size: 200% 100%;
+        background-repeat: repeat-x;
+        background-position: center left calc(var(--rot) * 2 * var(--size)),
+          center left calc(var(--size) * 0.5 + (var(--rot) * 2 * var(--size)));
+        border-radius: calc(var(--size) * 0.125);
+      }
+
+      .x-wave,
+      .y-wave,
+      .xy-wave {
+        position: relative;
+        width: var(--size);
+        height: var(--size);
+      }
+
+      .circle,
+      .x-bar,
+      .y-bar {
+        position: relative;
+
+        &:before {
+          content: "";
+          position: absolute;
+          top: var(--top);
+          left: var(--left);
+          height: calc(var(--size) / 32);
+          width: calc(var(--size) / 32);
+          background-color: #fcecc9;
+          border: var(--border) solid var(--color);
+          border-radius: 50%;
+          transform: translate(-50%, -50%);
+          z-index: 1;
+        }
+
+        &:after {
+          content: "";
+          position: absolute;
+        }
+      }
+
+      .x-bar,
+      .y-bar {
+        --length: calc(var(--gap) + ((1 - var(--dim)) * var(--size)));
+        --width: var(--border);
+
+        &:after {
+          background-color: var(--color);
+        }
+      }
+
+      @keyframes x {
+        from {
+          --x: 0;
+        }
+        to {
+          --x: 1;
+        }
+      }
+
+      @keyframes y {
+        from {
+          --y: 0;
+        }
+        to {
+          --y: 1;
+        }
+      }
+
+      @keyframes rot {
+        from {
+          --rot: 0;
+        }
+        to {
+          --rot: 1;
+        }
+      }
+
+      @property --x {
+        syntax: "<number>";
+        inherits: true;
+        initial-value: 0.5;
+      }
+
+      @property --y {
+        syntax: "<number>";
+        inherits: true;
+        initial-value: 0;
+      }
+
+      @property --rot {
+        syntax: "<number>";
+        inherits: true;
+        initial-value: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="grid">
+      <div class="circle"></div>
+      <div class="x-bar"></div>
+      <div class="x-wave"></div>
+      <div class="y-bar"></div>
+      <div class="y-wave"></div>
+      <div class="xy-wave"></div>
+    </div>
+  </body>
+</html>

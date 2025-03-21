@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>13</title>
+    <style>
+      /*  --------------CSS--------------- */
+      * {
+        padding: 0;
+        margin: 0;
+      }
+
+      body {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: rgba(255, 190, 221, 0.5);
+      }
+
+      .container {
+        width: 500px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .mirror {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        overflow: hidden;
+        position: absolute;
+        border: 5px solid #fff;
+        top: 0;
+        left: 0;
+        transform: translate(-10px, -10px);
+        box-shadow: 0 0 40px rgba(0, 0, 0, 0.7);
+      }
+
+      .mirror img {
+        position: absolute;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- --------------HTML代码--------------- -->
+    <div class="container">
+      <img src="./03.png" width="100%" alt="" />
+      <div class="mirror">
+        <img src="./03.png" alt="" />
+      </div>
+    </div>
+    <!-- --------------JS代码--------------- -->
+    <script>
+      const container = document.querySelector(".container");
+      const mirror = document.querySelector(".mirror");
+      const bigImg = document.querySelector(".mirror img");
+      // 绑定container的鼠标移动事件
+      container.addEventListener("mousemove", (e) => {
+        // 获取鼠标距离左侧和顶部的边界偏移值
+        let x = e.clientX;
+        let y = e.clientY;
+        // 获取container距离左侧和顶部的边界偏移值
+        let left = container.offsetLeft;
+        let Top = container.offsetTop;
+        // 获取放大镜（mirror）距离container的left和top，让放大镜居中鼠标
+        let mirrorLeft = x - left - mirror.offsetWidth / 2;
+        let mirrorTop = y - Top - mirror.offsetHeight / 2;
+
+        mirror.style.left = mirrorLeft + "px";
+        mirror.style.top = mirrorTop + "px";
+
+        // 计算图片放大
+        let bigImgLeft =
+          ((mirrorLeft + mirror.offsetWidth / 2) / container.offsetWidth) *
+            bigImg.offsetWidth -
+          mirror.offsetWidth / 2;
+        let bigImgTop =
+          ((mirrorTop + mirror.offsetHeight / 2) / container.offsetHeight) *
+            bigImg.offsetHeight -
+          mirror.offsetHeight / 2;
+
+        bigImg.style.left = -bigImgLeft + "px";
+        bigImg.style.top = -bigImgTop + "px";
+      });
+    </script>
+  </body>
+</html>

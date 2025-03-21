@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Custom Cursor Effect</title>
+    <style>
+
+      @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap");
+      :root {
+        --blue: #102770;
+        --white: #ffffff;
+        --yellow: #ffeba7;
+        --purple: #9b59b6;
+      }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      ::selection {
+        color: var(--yellow);
+        background-color: var(--blue);
+      }
+      ::-moz-selection {
+        color: var(--yellow);
+        background-color: var(--blue);
+      }
+      body {
+        background-color: var(--white);
+        background-size: cover;
+        background-position: center;
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+        min-height: 100vh;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+      }
+      p {
+        font-family: "Roboto", sans-serif;
+        font-weight: 500;
+        font-size: 26px;
+        line-height: 1.7;
+        color: var(--blue);
+        margin: 0;
+      }
+      .section-fluid-main {
+        position: relative;
+        display: block;
+        width: calc(100% - 40px);
+        padding-right: 15px;
+        padding-left: 15px;
+        margin-right: auto;
+        margin-left: auto;
+        max-width: 1050px;
+        padding-top: 50px;
+        padding-bottom: 90px;
+        -ms-flex-item-align: center;
+        align-self: center;
+        z-index: 3;
+      }
+      .section-row {
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        margin-right: -15px;
+        margin-left: -15px;
+        -ms-flex-pack: center;
+        justify-content: center;
+      }
+      .section-col {
+        position: relative;
+        width: 100%;
+        -ms-flex: 0 0 100%;
+        flex: 0 0 100%;
+        max-width: 100%;
+        padding: 15px;
+      }
+
+      /* #Cursor
+================================================== */
+      .cursor,
+      .cursor2,
+      .cursor3 {
+        position: fixed;
+        border-radius: 50%;
+        transform: translateX(-50%) translateY(-50%);
+        pointer-events: none;
+        left: -100px;
+        top: 50%;
+        z-index: 4;
+      }
+      .cursor {
+        background-color: var(--blue);
+        height: 0;
+        width: 0;
+      }
+      .cursor2,
+      .cursor3 {
+        height: 50px;
+        width: 50px;
+        transition: all 200ms ease-out;
+        background-position: center;
+        background-size: 0 0;
+      }
+      .cursor2.hover,
+      .cursor3.hover {
+        height: 220px;
+        width: 320px;
+        border: none;
+        border-radius: 8px;
+      }
+      .cursor2 {
+        border: 2px solid var(--blue);
+        box-shadow: 0 0 12px rgba(16, 39, 112, 0.2);
+      }
+      .cursor2.hover {
+        background-size: cover;
+        box-shadow: 0 0 0 rgba(16, 39, 112, 0.2);
+      }
+      body.img-1-wrap .cursor2,
+      .cursor3 {
+        background-image: url("./sl1.jpg");
+      }
+      body.img-2-wrap .cursor2,
+      .cursor3 {
+        background-image: url("./sl2.jpg");
+      }
+      body.img-3-wrap .cursor2,
+      .cursor3 {
+        background-image: url("./sl3.jpg");
+      }
+      body.img-4-wrap .cursor2,
+      .cursor3 {
+        background-image: url("./sl4.jpg");
+      }
+      body.logo-wrap .cursor2,
+      .cursor3 {
+        background-image: none;
+        height: 36px;
+        width: 36px;
+      }
+      body.logo-wrap .cursor2.hover,
+      body.logo-wrap .cursor3.hover {
+        height: 36px;
+        width: 36px;
+        transform: scale(2) translateX(-25%) translateY(-25%);
+        border-radius: 50%;
+        background-color: var(--yellow);
+      }
+
+      .hover-target {
+        position: relative;
+        display: inline-block;
+        text-decoration: none;
+        color: var(--purple);
+        transition: color 250ms ease;
+      }
+      .hover-target:before {
+        position: absolute;
+        content: "";
+        height: 0;
+        border-radius: 1px;
+        bottom: 0;
+        left: -10px;
+        width: calc(100% + 20px);
+        border-radius: 2px;
+        display: block;
+        background-color: var(--yellow);
+        transition: height 250ms ease;
+        mix-blend-mode: difference;
+        opacity: 0.6;
+      }
+      .hover-target:hover:before {
+        height: 100%;
+      }
+      .hover-target:hover {
+        z-index: 5;
+        color: var(--yellow);
+      }
+
+      .logo {
+        position: fixed;
+        top: 25px;
+        left: 25px;
+        display: block;
+        z-index: 1000;
+      }
+      .logo img {
+        height: 26px;
+        width: auto;
+        display: block;
+      }
+      .logo:before {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="section-fluid-main">
+      <div class="section-row">
+        <div class="section-col">
+          <p>
+            Contrary to popular belief, Lorem Ipsum is not
+            <a href="#" class="hover-target img-1">simply random text</a>. It
+            has roots in a piece of classical
+            <a href="#" class="hover-target img-2">Latin literature</a> from 45
+            BC, making it over 2000 years old. Richard McClintock, a Latin
+            professor at Hampden-Sydney College in
+            <a href="#" class="hover-target img-3">Virginia</a>, looked up one
+            of the more obscure
+            <a href="#" class="hover-target img-4">Latin words</a>, consectetur,
+            from a Lorem Ipsum passage.
+          </p>
+        </div>
+      </div>
+
+      <div class="cursor" id="cursor"></div>
+      <div class="cursor2" id="cursor2"></div>
+      <div class="cursor3" id="cursor3"></div>
+    </div>
+    <script>
+      document
+        .getElementsByTagName("body")[0]
+        .addEventListener("mousemove", function (n) {
+          (t.style.left = n.clientX + "px"),
+            (t.style.top = n.clientY + "px"),
+            (e.style.left = n.clientX + "px"),
+            (e.style.top = n.clientY + "px"),
+            (i.style.left = n.clientX + "px"),
+            (i.style.top = n.clientY + "px");
+        });
+      var t = document.getElementById("cursor"),
+        e = document.getElementById("cursor2"),
+        i = document.getElementById("cursor3");
+      function n(t) {
+        e.classList.add("hover", "hover-2"),
+          i.classList.add("hover", "hover-2");
+      }
+      function s(t) {
+        e.classList.remove("hover", "hover-2"),
+          i.classList.remove("hover", "hover-2");
+      }
+      s();
+      for (
+        var r = document.querySelectorAll(".hover-target, .hover-target-2"),
+          a = r.length - 1;
+        a >= 0;
+        a--
+      ) {
+        o(r[a]);
+      }
+      function o(t) {
+        t.addEventListener("mouseover", n), t.addEventListener("mouseout", s);
+      }
+      document.addEventListener("DOMContentLoaded", function () {
+        var hoverLink = document.querySelector(".logo");
+        var bodychange = document.querySelector("body");
+
+        hoverLink.addEventListener("mouseenter", function (e) {
+          bodychange.classList.add("logo-wrap");
+        });
+        hoverLink.addEventListener("mouseleave", function () {
+          bodychange.classList.remove("logo-wrap");
+        });
+      });
+      document.addEventListener("DOMContentLoaded", function () {
+        var hoverLink = document.querySelector(".img-1");
+        var bodychange = document.querySelector("body");
+
+        hoverLink.addEventListener("mouseenter", function (e) {
+          bodychange.classList.add("img-1-wrap");
+        });
+        hoverLink.addEventListener("mouseleave", function () {
+          bodychange.classList.remove("img-1-wrap");
+        });
+      });
+      document.addEventListener("DOMContentLoaded", function () {
+        var hoverLink = document.querySelector(".img-2");
+        var bodychange = document.querySelector("body");
+
+        hoverLink.addEventListener("mouseenter", function (e) {
+          bodychange.classList.add("img-2-wrap");
+        });
+        hoverLink.addEventListener("mouseleave", function () {
+          bodychange.classList.remove("img-2-wrap");
+        });
+      });
+      document.addEventListener("DOMContentLoaded", function () {
+        var hoverLink = document.querySelector(".img-3");
+        var bodychange = document.querySelector("body");
+
+        hoverLink.addEventListener("mouseenter", function (e) {
+          bodychange.classList.add("img-3-wrap");
+        });
+        hoverLink.addEventListener("mouseleave", function () {
+          bodychange.classList.remove("img-3-wrap");
+        });
+      });
+      document.addEventListener("DOMContentLoaded", function () {
+        var hoverLink = document.querySelector(".img-4");
+        var bodychange = document.querySelector("body");
+
+        hoverLink.addEventListener("mouseenter", function (e) {
+          bodychange.classList.add("img-4-wrap");
+        });
+        hoverLink.addEventListener("mouseleave", function () {
+          bodychange.classList.remove("img-4-wrap");
+        });
+      });
+    </script>
+  </body>
+</html>

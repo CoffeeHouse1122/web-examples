@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>按钮 - 仿真开关</title>
+  <style>
+    body {
+      display: grid;
+      place-content: center;
+      min-height: 100vh;
+      font-family: sans-serif;
+      overflow: clip;
+      background-color: #50a2a7;
+
+      .container {
+        h1 {
+          opacity: 0;
+          color: #e9b44c;
+        }
+
+        height: 100vh;
+        width: 100vw;
+        display: grid;
+        place-items: center;
+        align-content: center;
+
+        svg {
+          path.switch {
+            transform-origin: center;
+          }
+        }
+
+        svg.switch-off {
+          path.switch {
+            transform: rotatex(180deg);
+            fill: #f2f7f2;
+          }
+        }
+      }
+    }
+
+    .lightsoff {
+      background-color: #1c110a;
+
+      .container h1 {
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Last one out turn off the lights.</h1>
+    <svg id="svgswitch" class="" onclick="flipSwitch()" width="139" height="202" viewBox="0 0 139 202" fill="white"
+      xmlns="http://www.w3.org/2000/svg">
+      <path class="frame"
+        d="M1 9.57144C1 4.83757 4.83356 1 9.5625 1H129.438C134.166 1 138 4.83756 138 9.57143V192.429C138 197.162 134.166 201 129.438 201H9.5625C4.83356 201 1 197.162 1 192.429V9.57144Z"
+        stroke="black" stroke-width="2" />
+
+      <path d="M88.2968 49L92.6667 67.5714L83.927 98.9999H47L62.0777 68.2694L56.2513 49L88.2968 49Z" fill="white" />
+      <path d="M47 99.4286H84.1042V140.429H47V99.4286Z" fill="white" />
+      <path class="switch"
+        d="M47 98.9999H83.927L92.6667 67.5714L88.2968 49L56.2513 49M47 98.9999L62.0777 68.2694L56.2513 49M47 98.9999V66.1429L56.2513 49M62.0777 69H92.2694M47 99.4286H84.1042V140.429H47V99.4286Z"
+        stroke="black" stroke-width="2" />
+    </svg>
+  </div>
+  <script>
+    const lightswitch = document.getElementById("svgswitch");
+    const bodybg = document.body;
+
+    function flipSwitch() {
+      lightswitch.classList.toggle("switch-off");
+      bodybg.classList.toggle("lightsoff");
+    }
+  </script>
+</body>
+
+</html>

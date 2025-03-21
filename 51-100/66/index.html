@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Circular Progress Bar CSS</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css?? family Poppins:wght@400; 8008&display=swap");
+
+      body {
+        background-color: #131313;
+      }
+
+      .skills-wrapper {
+        min-width: 500px;
+        display: flex;
+        padding-top: 50px;
+        padding-left: 50px;
+      }
+
+      .skill {
+        width: 130px;
+        height: 130px;
+        box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.3),
+          -5px -5px 20px rgba(0, 0, 0, 0.3);
+        border-radius: 50%;
+        position: relative;
+        display: grid;
+        place-items: center;
+      }
+
+      .skill:not(:last-child) {
+        margin-right: 3rem;
+      }
+
+      .skill::before {
+        content: "";
+        position: absolute;
+        width: 80%;
+        height: 80%;
+        border-radius: 50%;
+        background-color: #131313;
+        box-shadow: inset 5px 5px 20px
+          rgba(0, 0, 0, 031. inset -5px 5px 20px rgba(0, 0, 0, 0.33));
+      }
+
+      .skill:nth-child(1) {
+        background-image: conic-gradient(#f16524 70%, transparent 0);
+        color: #fc486b;
+      }
+
+      .skill:nth-child(2) {
+        background-image: conic-gradient(#38b6ff 90%, transparent 0);
+        color: #38b6ff;
+      }
+
+      .skill:nth-child(3) {
+        background-image: conic-gradient(#03ccac 65%, transparent 0);
+        color: #03ccac;
+      }
+
+      .skill:nth-child(4) {
+        background-image: conic-gradient(#8669fb 50%, transparent 0);
+        color: #8669fb;
+      }
+
+      .content {
+        font-size: 20px;
+        z-index: 1;
+        text-align: center;
+        font-family: Poppins;
+      }
+
+      .content span {
+        display: block;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="skills-wrapper">
+      <div class="skill">
+        <div class="content"><span>70%</span><span>HTML</span></div>
+      </div>
+
+      <div class="skill">
+        <div class="content"><span>90%</span><span>CSS</span></div>
+      </div>
+      <div class="skill">
+        <div class="content"><span>65%</span><span>JavaScript</span></div>
+      </div>
+    </div>
+  </body>
+</html>

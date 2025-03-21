@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wall of text</title>
+    <style>
+      :root {
+        --hue: 220; /* Bascolor */
+      }
+
+      body {
+        background-color: hsl(var(--hue), 50%, 10%);
+        margin: 0px;
+      }
+
+      #wall {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(21, 1fr);
+        grid-gap: 1px;
+        margin: 0px;
+      }
+
+      p {
+        font-size: 4vw;
+        line-height: 1em;
+        font-weight: 700;
+        font-family: "Fira Code", monospace;
+        text-transform: uppercase;
+        color: rgba(0, 0, 0, 0);
+      }
+
+      span {
+        opacity: 0;
+        text-align: center;
+        color: hsl(var(--hue), 40%, 70%);
+      }
+
+      .oddWord {
+        background-color: hsl(var(--hue), 40%, 20%);
+      }
+
+      .evenWord {
+        background-color: hsl(var(--hue), 40%, 40%);
+      }
+    </style>
+  </head>
+  <body>
+    <p id="wall">
+      A Wall of Text is a curious paradox. A vast expanse of written word can be
+      both intimidating and inviting. The beauty lies not just in the content,
+      but also in the shapes of the letters themselves. Each character, a tiny
+      masterpiece, contributes to a larger, more intricate form.
+    </p>
+  </body>
+  <script src="./gsap.min.js"></script>
+  <script>
+    function addSpans() {
+      const wall = document.getElementById("wall");
+      const words = wall.textContent.split(" ");
+
+      for (let i = 0; i < words.length; i++) {
+        const word = words[i];
+        let newWord = "";
+
+        for (let j = 0; j < word.length; j++) {
+          const letter = word[j];
+          const spanClass = i % 2 === 0 ? "oddWord" : "evenWord"; // If odd words add class oddWord or if even words add class evenWord
+          newWord += `<span class="${spanClass}">${letter}</span>`;
+        }
+        words[i] = newWord;
+      }
+
+      wall.innerHTML = words.join(" ");
+    }
+
+    addSpans();
+
+    // Show the wall
+    gsap.to("span", { opacity: 1, stagger: { from: "random", amount: 3 } });
+  </script>
+</html>

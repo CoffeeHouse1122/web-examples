@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>无限循环的打字机动画效果</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --body-color: #1d1e23;
+        --primary-color: #ffffff;
+        --second-color: #bd53ed;
+      }
+
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        min-height: 100vh;
+        background-color: var(--body-color);
+      }
+
+      h1 {
+        font-size: 2rem;
+        color: var(--primary-color);
+      }
+      h1 span {
+        color: var(--second-color);
+        position: relative;
+      }
+      h1 span::before {
+        content: "";
+        width: 2px;
+        height: 30px;
+        background-color: var(--second-color);
+
+        position: absolute;
+        right: -8px;
+        top: 50%;
+        transform: translateY(-50%);
+
+        animation: blink 0.7s infinite;
+      }
+
+      @keyframes blink {
+        50% {
+          opacity: 0;
+        }
+      }
+
+      h1 span.stop-blinking::before {
+        animation: none;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Coding is <span></span></h1>
+    <script>
+      /**
+       * 需要播放的单词组，先把数组每一项看做一组，所以这里是设置了四组单词；
+       * 获取显示每组字符的容器；
+       *
+       */
+      const words = ["like Art", "Creativity", "Life", "Everything"],
+        dynamicText = document.querySelector("h1 span");
+
+      /**
+       * 当前展示的单词组索引，比如这里默认："like Art"
+       * 当前展示的字符索引，比如这里默认："l"
+       * 当前删除文本效果状态，默认：false
+       */
+      let wordIndex = 0,
+        charIndex = 1,
+        isDeleting = false;
+
+      function typingEffect() {
+        const currentWord = words[wordIndex]; //当前展示的单词
+        const currentChar = currentWord.substring(0, charIndex); //当前显示的字符
+
+        /**元素设置字符的同时，添加类名 */
+        dynamicText.textContent = currentChar;
+        dynamicText.classList.add("stop-blinking");
+
+        /** 1. 每个单词组播放 */
+        if (!isDeleting && charIndex < currentWord.length) {
+          charIndex++;
+
+          setTimeout(typingEffect, 200);
+        } else if (isDeleting && charIndex > 0) {
+          /**
+           * 3. 设置删除每个字符的效果
+           */
+          charIndex--;
+
+          setTimeout(typingEffect, 200);
+        } else {
+          /**
+           * 2.设置当前需要删除的单词组或下一个要播放的单词组:
+           */
+          isDeleting = !isDeleting;
+          wordIndex = !isDeleting ? (wordIndex + 1) % words.length : wordIndex;
+
+          dynamicText.classList.remove("stop-blinking");
+          setTimeout(typingEffect, 200);
+        }
+      }
+
+      typingEffect();
+    </script>
+  </body>
+</html>

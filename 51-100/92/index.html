@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>创意菱形相册</title>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background-color: #dbddff;
+    }
+
+    .shell {
+      --size: 100px;
+      display: grid;
+      grid-template-columns: repeat(8, var(--size));
+      grid-auto-rows: var(--size);
+      place-items: start center;
+      gap: 15px;
+      margin-bottom: 50px;
+    }
+
+    .shell img {
+      object-fit: cover;
+      width: 100%;
+      height: 100%;
+      transform: rotate(-45deg) scale(1.5);
+      transition: 0.05s;
+    }
+
+    .box {
+      width: 130px;
+      height: 130px;
+      position: relative;
+      overflow: hidden;
+      transform: rotate(45deg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      grid-column: auto / span 2;
+      border-radius: 10px;
+      box-shadow: 5px 0 5px #00000027;
+      border: 5px solid #fff;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .box:nth-child(7n-2) {
+      grid-column: 2 / span 2;
+    }
+
+    .shell:hover img:not(:hover) {
+      filter: brightness(0.5) contrast(0.8);
+    }
+
+    .box:hover {
+      transform: rotate(0) scale(1.6);
+      z-index: 1;
+    }
+  </style>
+</head>
+<body>
+    <div class="shell">
+      <div class="box">
+        <img src="./01.png" alt="">
+      </div>
+      <div class="box">
+        <img src="./01.png" alt="">
+      </div>
+      <div class="box">
+        <img src="./01.png" alt="">
+      </div>
+      <div class="box">
+        <img src="./01.png" alt="">
+      </div>
+      <div class="box">
+        <img src="./01.png" alt="">
+      </div>
+      <div class="box">
+        <img src="./01.png" alt="">
+      </div>
+      <div class="box">
+        <img src="./01.png" alt="">
+      </div>
+      <div class="box">
+        <img src="./01.png" alt="">
+      </div>
+      <div class="box">
+        <img src="./01.png" alt="">
+      </div>
+      <div class="box">
+        <img src="./01.png" alt="">
+      </div>
+      <div class="box">
+        <img src="./01.png" alt="">
+      </div>
+      <div class="box">
+        <img src="./01.png" alt="">
+      </div>
+      <div class="box">
+        <img src="./01.png" alt="">
+      </div>
+      <div class="box">
+        <img src="./01.png" alt="">
+      </div>
+      <div class="box">
+        <img src="./01.png" alt="">
+      </div>
+      <div class="box">
+        <img src="./01.png" alt="">
+      </div>
+      <div class="box">
+        <img src="./01.png" alt="">
+      </div>
+      <div class="box">
+        <img src="./01.png" alt="">
+      </div>
+      <div class="box">
+        <img src="./01.png" alt="">
+      </div>
+      <div class="box">
+        <img src="./01.png" alt="">
+      </div>
+      <div class="box">
+        <img src="./01.png" alt="">
+      </div>
+      <div class="box">
+        <img src="./01.png" alt="">
+      </div>
+      <div class="box">
+        <img src="./01.png" alt="">
+      </div>
+      <div class="box">
+        <img src="./01.png" alt="">
+      </div>
+      <div class="box">
+        <img src="./01.png" alt="">
+      </div>
+      <div class="box">
+        <img src="./01.png" alt="">
+      </div>
+      <div class="box">
+        <img src="./01.png" alt="">
+      </div>
+      <div class="box">
+        <img src="./01.png" alt="">
+      </div>
+      <div class="box">
+        <img src="./01.png" alt="">
+      </div>
+      <div class="box">
+        <img src="./01.png" alt="">
+      </div>
+    </div>
+</body>
+<script>
+  let boxes = document.querySelectorAll('.box');
+  boxes.forEach(box => {
+    box.addEventListener('mousemove', (e) => {
+      const rect = box.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      const img = box.querySelector('img');
+      img.style.transform = `rotate(0) translate3d(${x * -0.5}px, ${y * -0.5}px, 0) scale(1.8)`;
+    });
+    box.addEventListener('mouseleave', () => {
+      const img = box.querySelector('img');
+      img.style.transform = `rotate(-45deg) scale(1.5)`;
+    });
+  });
+</script>
+</html>

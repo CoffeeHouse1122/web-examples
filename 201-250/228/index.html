@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>loading - 多米诺</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        width: 100vw;
+        height: 100vh;
+        background-color: rgb(51, 51, 51);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      /* From Uiverse.io by vikramsinghnegi */
+      .loader-spanne-20 {
+        position: relative;
+        width: 100px;
+        height: 30px;
+        padding: 0;
+      }
+      .loader-spanne-20 > span {
+        position: absolute;
+        right: 0;
+        width: 3px;
+        height: 30px;
+        background-color: rgb(116, 204, 197);
+        display: block;
+        border-radius: 3px;
+        transform-origin: 50% 100%;
+        animation: move 2.8s linear infinite;
+      }
+      .loader-spanne-20 > span:nth-child(1) {
+        animation-delay: -0.4s;
+      }
+      .loader-spanne-20 > span:nth-child(2) {
+        animation-delay: -0.8s;
+      }
+      .loader-spanne-20 > span:nth-child(3) {
+        animation-delay: -1.2s;
+      }
+      .loader-spanne-20 > span:nth-child(4) {
+        animation-delay: -1.6s;
+      }
+      .loader-spanne-20 > span:nth-child(5) {
+        animation-delay: -2s;
+      }
+      .loader-spanne-20 > span:nth-child(6) {
+        animation-delay: -2.4s;
+      }
+      .loader-spanne-20 > span:nth-child(7) {
+        animation-delay: -2.8s;
+      }
+      @keyframes move {
+        0% {
+          opacity: 0;
+          transform: translateX(0px) rotate(0deg);
+        }
+        20% {
+          opacity: 1;
+        }
+        40% {
+          transform: translateX(-40px) rotate(0deg);
+        }
+        50% {
+          opacity: 1;
+          transform: translateX(-50px) rotate(22deg);
+        }
+        85% {
+          opacity: 1;
+          transform: translateX(-85px) rotate(60deg);
+        }
+        100% {
+          opacity: 0;
+          transform: translateX(-100px) rotate(65deg);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- From Uiverse.io by vikramsinghnegi -->
+    <div class="center-body">
+      <div class="loader-spanne-20">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </body>
+</html>

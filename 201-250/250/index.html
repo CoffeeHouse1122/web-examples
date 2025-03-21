@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>动画 - 翻转图片</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Shadows+Into+Light&display=swap");
+
+      body {
+        height: 100vh;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background: #151515;
+        perspective: 60vmin;
+        transform-style: preserve-3d;
+      }
+
+      .container {
+        width: 70vmin;
+        height: 70vmin;
+        will-change: transform;
+        transition: 0.1s transform;
+        transform-style: preserve-3d;
+        transform: rotateX(20deg) rotateY(0deg);
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+
+      .cell-container {
+        width: 7vmin;
+        height: 7vmin;
+        margin: 0;
+        transform-style: preserve-3d;
+        position: relative;
+        backface-visibility: hidden;
+        transition: 0.5s transform;
+        transform: rotateX(0deg);
+      }
+
+      .cell {
+        position: relative;
+        backface-visibility: hidden;
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+        will-change: transform;
+        transition: 0.5s transform;
+        transform: translateZ(0px) scale(0) rotate(0deg);
+        background: url("./01.png");
+        background-size: 1076% 1066% !important;
+        margin: 0;
+      }
+      .cell2 {
+        transform-origin: top;
+        box-sizing: border-box;
+        width: 100%;
+        height: 100%;
+        background: url("./02.png");
+        position: absolute;
+        margin: 0;
+      }
+
+      h2 {
+        color: #f1f1f2;
+        font-family: "Shadows Into Light", serif;
+        font-weight: 100;
+        font-size: 1.45rem;
+        letter-spacing: 3px;
+        padding-top: 1.1rem;
+        user-select: none;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- The actual code works on squared shaped pictures only and I just put two of them for now -->
+    <div class="container" id="mapping"></div>
+    <h2>Try moving your mouse</h2>
+    <script>
+      let el = document.getElementById("mapping");
+      // Dumb but easiest way to create the ceilling
+
+      let y = 0;
+      for (var i = 0; i < 100; i++) {
+        let container = document.createElement("div");
+        container.className = "cell-container";
+
+        el.appendChild(container);
+
+        let newElement = document.createElement("div");
+        let newElement2 = document.createElement("div");
+        newElement.className = "cell";
+        newElement2.className = "cell cell2";
+        newElement.style.backgroundPosition =
+          (i % 10) * 10 + "%" + y * 10 + "%";
+        newElement2.style.backgroundPosition =
+          (i % 10) * 10 + "%" + y * 10 + "%";
+        newElement.style.zIndex = 100 - i;
+        newElement.style.transform =
+          "translateZ(-1000px) scale(0) rotateX(-30deg)";
+        newElement2.style.transform =
+          "translateZ(-1000px) scale(0) rotateX(0deg)";
+        setTimeout(
+          function (element) {
+            element.style.transform =
+              "translateZ(0px) scale(1.04) rotateX(360deg)";
+          },
+          i * 8,
+          newElement
+        );
+        setTimeout(
+          function (element) {
+            element.style.transform =
+              "translateZ(0px) scale(1.04) rotateX(180deg)";
+          },
+          i * 8,
+          newElement2
+        );
+        container.appendChild(newElement);
+        container.appendChild(newElement2);
+        if (i % 10 == 9) y++;
+      }
+
+      let allCellsContainers = document.querySelectorAll(".cell-container");
+
+      let elSide = 0;
+
+      setInterval(function () {
+        if (elSide == 18000) elSide = 0;
+        elSide += 180;
+        for (var i = allCellsContainers.length - 1; i >= 0; i--) {
+          setTimeout(
+            function (i) {
+              allCellsContainers[i].style.transform =
+                "rotateX(" + elSide + "deg)";
+            },
+            800 * Math.random() * Math.random(),
+            i
+          );
+        }
+      }, 1800);
+
+      window.onmousemove = function (e) {
+        let yAngle =
+          (-(e.pageY - window.innerHeight / 2) / window.innerHeight) * 35;
+        let xAngle =
+          ((e.pageX - window.innerWidth / 2) / window.innerWidth) * 35;
+
+        el.style.transform =
+          "rotateX( " + yAngle + "deg) rotateY(" + xAngle + "deg)";
+      };
+    </script>
+  </body>
+</html>

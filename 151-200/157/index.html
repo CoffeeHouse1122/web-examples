@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>nothing to see</title>
+    <style>
+      @import url(https://fonts.bunny.net/css?family=share-tech-mono:400);
+
+      * {
+        box-sizing: border-box;
+      }
+      :root {
+        --clr-bg: black;
+        --clr-primary: rgb(203, 213, 225);
+        --clr-cta: rgb(132, 204, 22);
+      }
+      body {
+        font-family: "Share Tech Mono", monospace;
+        height: 100svh;
+        margin: 0;
+        padding: 0;
+        background-color: var(--clr-bg);
+        display: grid;
+        place-content: center;
+      }
+
+      svg {
+        --duration: 500ms;
+        position: relative;
+        width: 80%;
+        position: fixed;
+        inset: 0;
+        margin: auto;
+        font-size: 10rem;
+        font-weight: 800;
+        line-height: 1;
+        color: var(--clr-primary);
+        cursor: pointer;
+        /*outline: 1px dashed red;*/
+      }
+      svg text {
+        translate: var(--x) 7.6rem;
+        margin: 0;
+        padding: 0;
+        transition: var(--duration) linear;
+        transition-delay: var(--delay, 0ms);
+        transform-origin: left;
+        scale: var(--s) 1;
+        /*filter: drop-shadow(3px 3px 0 rgb(244, 63, 94));*/
+      }
+      /* n */
+      svg text:nth-child(1) {
+        --x: -0.45rem;
+      }
+      /* o */
+      svg text:nth-child(2) {
+        --x: 82px;
+      }
+      /* t */
+      svg text:nth-child(3) {
+        --x: 170px;
+      }
+      /* h */
+      svg text:nth-child(4) {
+        --x: 262px;
+      }
+      /* i */
+      svg text:nth-child(5) {
+        --x: 352px;
+      }
+      /* n */
+      svg text:nth-child(6) {
+        --x: 442px;
+      }
+      /* g */
+      svg text:nth-child(7) {
+        --x: 531px;
+      }
+      /* s */
+      svg text:nth-child(8) {
+        --x: 282px;
+        --s: 0;
+      }
+      /* e */
+      svg text:nth-child(9) {
+        --x: 372px;
+        --s: 0;
+      }
+      /* e */
+      svg text:nth-child(10) {
+        --x: 462px;
+        --s: 0;
+      }
+      /* underline */
+      svg rect {
+        transform-origin: left;
+        width: 525px;
+        height: 16px;
+        translate: 5px 134px;
+        color: var(--clr-cta);
+        transition: var(--duration) linear;
+        /*filter: drop-shadow(3px 3px 0 rgb(244, 63, 94));*/
+      }
+
+      /* HOVER */
+
+      /* hover - underline */
+      svg:hover rect {
+        scale: 0 1;
+      }
+      /* hover - n,h,i,n,g */
+      svg:hover
+        text:is(
+          :nth-child(1),
+          :nth-child(4),
+          :nth-child(5),
+          :nth-child(6),
+          :nth-child(7)
+        ) {
+        --s: 0;
+        --delay: calc(var(--duration) * 1);
+      }
+      /* hover - o,t */
+      svg:hover text:is(:nth-child(2), :nth-child(3)) {
+        color: var(--clr-cta);
+        --delay: calc(var(--duration) * 0.5);
+      }
+      /* hover - o */
+      svg:hover text:nth-child(2) {
+        --x: 152px;
+      }
+      /* hover - t */
+      svg:hover text:nth-child(3) {
+        --x: 62px;
+      }
+      /* hover - see */
+      svg:hover text:is(:nth-child(8), :nth-child(9), :nth-child(10)) {
+        --s: 1;
+        --delay: calc(var(--duration) * 2.5);
+      }
+
+      /*
+
+      Save for another day
+      .wrapper::before{
+        content: '';
+        position: fixed;
+        inset: 0;
+        background: 
+              repeating-linear-gradient(90deg, transparent, transparent 25%, pink 25%, pink 50%);
+          background-size: 10%;
+          background-position: 0;
+
+      }
+
+      @keyframes adjust-header{
+        to{
+          translate: 50px 0;
+          /* transform: translateX(-100rem); * /
+        }
+      }
+      */
+    </style>
+  </head>
+  <body>
+    <svg
+      viewBox="0 0 610 150"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="currentColor"
+      preserveAspectRatio="xMidYMid meet"
+    >
+      <text>n</text>
+      <text>o</text>
+      <text>t</text>
+      <text>h</text>
+      <text>i</text>
+      <text>n</text>
+      <text>g</text>
+      <text>s</text>
+      <text>e</text>
+      <text>e</text>
+      <rect />
+    </svg>
+  </body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>button - 渐变色背景</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        width: 100%;
+        height: 100vh;
+        background-color: #04111b;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .button {
+        width: 160px;
+        height: 48px;
+        border-radius: 6px;
+        background-size: 200% 600%;
+        background-image: radial-gradient(
+          closest-side,
+          #d628fe 6%,
+          #35a2fd 50%,
+          #d628fe 100%
+        );
+        background-position: 0% 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #ffffff;
+        font-size: 24px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="button">Button</div>
+  </body>
+  <script>
+    const speedDeg = 0.01;
+    const r = 0.5;
+    let frameId = 0;
+
+    const buttonRef = document.querySelector(".button");
+
+    const rotateBg = () => {
+      if (buttonRef) {
+        const bgPos = buttonRef.style.backgroundPosition;
+        if (!bgPos) {
+          buttonRef.style.backgroundPosition = "0% 50%";
+        } else {
+          const arr = bgPos.split(" ");
+          let x = Number(arr[0].substring(0, arr[0].length - 1)) / 100 - r;
+          let y = Number(arr[1].substring(0, arr[1].length - 1)) / 100 - r;
+
+          x = x * Math.cos(speedDeg) - y * Math.sin(speedDeg);
+          y = y * Math.cos(speedDeg) + x * Math.sin(speedDeg);
+
+          buttonRef.style.backgroundPosition = `${(x + r) * 100}% ${
+            (y + r) * 100
+          }%`;
+        }
+
+        frameId = requestAnimationFrame(rotateBg);
+      }
+    };
+
+    if (buttonRef) {
+      frameId = requestAnimationFrame(rotateBg);
+    }
+  </script>
+</html>

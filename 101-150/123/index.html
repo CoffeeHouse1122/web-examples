@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>3d幻灯片文本</title>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+      }
+      .atw-3dBlock {
+        position: relative;
+        font-family: "Outfit", sans-serif;
+        font-size: clamp(20px, 8vw, 48px);
+        text-decoration: none;
+        color: transparent;
+      }
+      .atw-3dBlock__top,
+      .atw-3dBlock__side {
+        position: relative;
+        display: block;
+        padding: 0 0.5em;
+        overflow: hidden;
+      }
+      .atw-3dBlock__top {
+        transform-origin: bottom left;
+        transform: rotateX(-35deg) rotateZ(-40deg) skew(30deg);
+      }
+      .atw-3dBlock__side {
+        transform-origin: top left;
+        transform: rotateY(-26deg) rotateZ(-31.8deg) skew(-33deg);
+      }
+      .atw-3dBlock__top .atw-3dBlock__inner,
+      .atw-3dBlock__side .atw-3dBlock__inner {
+        position: absolute;
+        left: 0;
+        display: block;
+        padding: 0 0.5em;
+        transition: ease 0.8s;
+        color: #fff;
+      }
+      .atw-3dBlock__top .atw-3dBlock__inner {
+        top: 0;
+      }
+      .atw-3dBlock__side .atw-3dBlock__inner {
+        top: -100%;
+      }
+      .atw-3dBlock__enter {
+        position: absolute;
+        top: 0;
+        left: -150%;
+        display: block;
+        padding: 0 0.5em;
+        transition: ease 0.8s;
+        animation: textColor linear 2s infinite;
+        transition: ease 1s;
+      }
+      .atw-3dBlock__text {
+        position: absolute;
+        top: -54%;
+        left: -20%;
+        width: 100%;
+        color: #fff;
+        font-size: clamp(16px, 5vw, 24px);
+        transform-origin: top right;
+        transform: rotateX(-35deg) rotateZ(-40deg) skew(30deg);
+      }
+      .atw-3dBlock:hover .atw-3dBlock__top .atw-3dBlock__inner {
+        top: 100%;
+      }
+      .atw-3dBlock:hover .atw-3dBlock__side .atw-3dBlock__inner {
+        top: 0;
+      }
+      .atw-3dBlock:hover .atw-3dBlock__enter {
+        left: 0;
+        animation-play-state: paused;
+      }
+      @keyframes textColor {
+        0% {
+          color: #00daec;
+        }
+        33% {
+          color: #413de3;
+        }
+        66% {
+          color: #8500e2;
+        }
+        100% {
+          color: #00daec;
+        }
+      }
+      /* -----------------------------
+      ↓　エフェクトには関係ないCSSです　↓
+      ----------------------------- */
+      .container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100vh;
+        background: #000;
+      }
+      /* -----------------------------
+      ↑　エフェクトには関係ないCSSです　↑
+      ----------------------------- */
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <a href="" class="atw-3dBlock">
+        <span class="atw-3dBlock__top">
+          SLash Renewal
+          <span class="atw-3dBlock__inner">SLash Renewal</span>
+          <span class="atw-3dBlock__enter">Check Now!</span>
+        </span>
+        <span class="atw-3dBlock__side">
+          SLash Renewal
+          <span class="atw-3dBlock__inner">SLash Renewal</span>
+        </span>
+        <span class="atw-3dBlock__text">
+          SLash, a freelance web creator training school, will reopen in March
+          2024!
+        </span>
+      </a>
+    </div>
+  </body>
+</html>
