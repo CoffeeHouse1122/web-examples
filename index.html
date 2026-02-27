@@ -195,6 +195,7 @@
       <h1 class="title">效果合集</h1>
       <div class="toolbar">
         <input id="searchInput" type="search" placeholder="搜索编号或标题" />
+        <button id="togglePreviewButton" type="button">仅看清单</button>
         <button id="refreshButton" type="button">刷新</button>
       </div>
     </div>
@@ -206,6 +207,7 @@
     const app = document.getElementById("app");
     const meta = document.getElementById("meta");
     const searchInput = document.getElementById("searchInput");
+    const togglePreviewButton = document.getElementById("togglePreviewButton");
     const refreshButton = document.getElementById("refreshButton");
 
     let cache = [];
@@ -214,9 +216,14 @@
     let autoLoadObserver = null;
     let previewObserver = null;
     let isAutoLoading = false;
+    let previewEnabled = true;
 
     const PAGE_SIZE = 24;
     const AUTO_PREVIEW_COUNT = 8;
+
+    function updateTogglePreviewButtonText() {
+      togglePreviewButton.textContent = previewEnabled ? "仅看清单" : "展示预览";
+    }
 
     async function loadManifest() {
       meta.textContent = "加载中...";
@@ -264,7 +271,9 @@
 
       renderNextPage();
       setupAutoLoad();
-      setupPreviewAutoLoad();
+      if (previewEnabled) {
+        setupPreviewAutoLoad();
+      }
       meta.textContent = `共 ${filtered.length} 个结果（总计 ${list.length} 个）`;
     }
 
@@ -377,6 +386,18 @@
     function buildCard(item, shouldAutoPreview) {
       const safeTitle = item.title || `效果 ${item.id}`;
 
+      if (!previewEnabled) {
+        return `
+          <article class="card">
+            <h3 class="card-title">#${item.id} ${safeTitle}</h3>
+            <div class="card-footer">
+              <p class="card-path">${item.path}</p>
+              <a class="open-link" href="./${item.path}" target="_blank" rel="noreferrer">新窗口打开</a>
+            </div>
+          </article>
+        `;
+      }
+
       if (!shouldAutoPreview) {
         const previewPlaceholder = `<div class="preview-placeholder" data-path="./${item.path}">
             滚动到此区域自动加载预览
@@ -441,7 +462,9 @@
         .join("");
 
       cardsRoot.insertAdjacentHTML("beforeend", cards);
-      observeNewLazyPreviews(cardsRoot);
+      if (previewEnabled) {
+        observeNewLazyPreviews(cardsRoot);
+      }
       renderedCount = end;
 
       if (renderedCount >= filteredCache.length) {
@@ -468,7 +491,14 @@
       render(cache, searchInput.value.trim().toLowerCase());
     });
 
+    togglePreviewButton.addEventListener("click", () => {
+      previewEnabled = !previewEnabled;
+      updateTogglePreviewButtonText();
+      render(cache, searchInput.value.trim().toLowerCase());
+    });
+
     refreshButton.addEventListener("click", loadManifest);
+    updateTogglePreviewButtonText();
     loadManifest();
   </script>
 </body>
