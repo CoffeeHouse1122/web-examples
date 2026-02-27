@@ -1,5 +1,37 @@
 # web-examples
 
+## 推荐展示与维护方案
+
+- 展示入口：`index.html`（无分组展示 + 搜索）
+- 数据来源：`manifest.json`（由脚本自动生成）
+- 新增案例：`tools/new-demo.mjs`（一键创建到 `demos/<id>/index.html`）
+
+## 使用方式
+
+在 `web-examples` 根目录执行：
+
+1. 生成清单（同时更新下方“页面案例集合”）
+
+```bash
+node .\tools\generate-manifest.mjs
+```
+
+2. 新增案例（示例：272）
+
+```bash
+node .\tools\new-demo.mjs 272 "按钮悬浮动效"
+```
+
+3. 重新生成清单
+
+```bash
+node .\tools\generate-manifest.mjs
+```
+
+4. 打开 `index.html` 查看合集
+
+---
+
 ## 页面案例集合
 
 1. CSS高级动效
@@ -11,10 +43,10 @@
 7. 跟踪导航栏
 8. 3D旋转轮播
 9. 立体翻页书
-10. 幻觉重影 
+10. 幻觉重影
 11. 水流波纹按钮
 12. 鼠标跟踪
-13. 放大镜 
+13. 放大镜
 14. 故障霓虹灯
 15. 烟花
 16. 七彩泡泡
@@ -22,16 +54,16 @@
 18. 旋转中的视差效果
 19. 网格图库
 20. 叠方块loading加载动画
-21. 小球爬楼梯loading加载动画 
+21. 小球爬楼梯loading加载动画
 22. 旋转菜单
 23. 纯CSS实现ANIPLEX特效
 24. 响应式漫画网格布局
 25. 荧光图标悬停效果
-26. 不一样的超链接下划线 
+26. 不一样的超链接下划线
 27. 文字溶合切换效果
 28. 文字边框视觉错位
 29. 简约的黑色分页
-30. 文字涂抹动画 
+30. 文字涂抹动画
 31. 图片九宫格
 32. 可爱的卷纸开关
 33. 粘性文字的滚动效果
@@ -48,7 +80,7 @@
 44. 飞向鼠标的纸飞机
 45. 简约社交分享按钮
 46. SVG：边框动画
-47. SVG：css文字描边动画 
+47. SVG：css文字描边动画
 48. SVG：js文字描边动画（GSAP）
 49. SVG：path轨迹运动（GSAP）
 50. SVG：图形变换（morphSVG收费）
@@ -67,14 +99,14 @@
 63. 纯 CSS 实现文字输入效果
 64. 多个loading效果
 65. Animated Stacked Cards
-66. Circular Progress Bar CSS 
+66. Circular Progress Bar CSS
 67. Sliding Diagonal Background Animation
 68. Digital Wrist Watch
 69. FAQ Accordion
 70. Pacman
 71. Ripple Loader Effect
 72. Snowman Animation
-73. Bubble Effect 
+73. Bubble Effect
 74. Amazing css effects
 75. 创意的五边形翻转loading动画
 76. Circular Navigation
@@ -87,10 +119,10 @@
 83. Content filter
 84. Hover slider
 85. Back to top with progress indicator
-86. Background clip text hover animation 
+86. Background clip text hover animation
 87. Pricing - pure css
 88. Custom Cursor Effect
-89. animation-timeline滚动加载
+89. animation-timeline滚动加载（！！兼容性差）
 90. 原生实现带缩略图的焦点图
 91. 轮播图
 92. 创意菱形相册
@@ -108,8 +140,8 @@
 104. Text-Animation-test
 105. 上升的粒子
 106. Confetti Party
-107. AI Generative Art 
-108. Riot Games logo particles 
+107. AI Generative Art
+108. Riot Games logo particles
 109. Gallery - click
 110. GSAP Scroll Fixed Gallery
 111. Changing Characters Typing Animation (CSS Only)
@@ -119,9 +151,9 @@
 115. JS Typewriter
 116. Animated Nature
 117. 毛刺故障效果
-118. 创意交互按钮1
-119. 创意交互按钮2
-120. 创意交互按钮3
+118. 创意交互按钮
+119. 创意交互按钮
+120. 创意交互按钮
 121. 创意交互按钮
 122. 创意交互按钮
 123. 3d幻灯片文本
@@ -144,15 +176,15 @@
 140. 《疯狂杂志》的折叠效果
 141. cropperjs裁剪及下载图片
 142. 文字环绕图片 - [shape-outside property]
-143. 菜单滑过交互 
-144. Parallax Image Layers 
-145. Gleaming Loading 
+143. 菜单滑过交互
+144. Parallax Image Layers
+145. Gleaming Loading
 146. 洗牌动画
 147. 仿Apple Dock导航栏
 148. 白色按钮
 149. Animated Grid
 150. 文字故障效果
-151. 按钮交互粒子效果
+151. 按钮交互粒子效果 pixel-canvas Web Component
 152. 互动烟花发射器
 153. 复古未来主义交互按钮
 154. canvas 线条分裂特效
@@ -161,7 +193,7 @@
 157. nothing to see
 158. 滚动触发动画（jQuery）
 159. 电影感文字入场动画
-160. 擦洗过渡效果
+160. 过渡效果 - 擦洗
 161. 过渡效果 - 卡通
 162. 过渡效果 - 克隆
 163. 过渡效果 - 钻石
@@ -200,7 +232,7 @@
 196. 疯狂烟花
 197. 烟雾光标效果
 198. 星星和曲速
-199. 网页背景-交互网格效应
+199. 网页背景-交互网格效应（参考https://rauno.me/）
 200. loading
 201. 3D空间滚动缩放与CSS滚动动画
 202. 滑过效果（mix-blend-mode）
@@ -266,10 +298,15 @@
 262. 菜单 - 图标
 263. 菜单 - 社群九宫格
 264. 卡片交互
-265. 卡片波浪
+265. Document
 266. 卡片边框流光
 267. 卡片交互
 268. 指纹识别
 269. 卡片创意交互
 270. 太阳
 271. 地球
+272. 速度可控的打字机效果
+273. 通知气泡彩蛋
+274. 摊牌动画
+275. 形变确认按钮
+276. 可拖拽便签彩蛋

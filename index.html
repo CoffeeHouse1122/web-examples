@@ -1,0 +1,475 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Web Effects Gallery</title>
+  <style>
+    :root {
+      color-scheme: light;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 24px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      background: #f6f8fa;
+      color: #24292f;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .title {
+      margin: 0;
+      font-size: 24px;
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    input[type="search"] {
+      width: 320px;
+      max-width: 80vw;
+      border: 1px solid #d0d7de;
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 14px;
+      background: #ffffff;
+    }
+
+    button {
+      border: 1px solid #d0d7de;
+      border-radius: 8px;
+      background: #ffffff;
+      padding: 8px 12px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #f3f4f6;
+    }
+
+    .meta {
+      margin: 0 0 12px;
+      color: #656d76;
+      font-size: 13px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 10px;
+    }
+
+    .card {
+      border: 1px solid #d0d7de;
+      border-radius: 10px;
+      background: #ffffff;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .card:hover {
+      border-color: #8c959f;
+      transform: translateY(-1px);
+      transition: 0.15s ease;
+    }
+
+    .preview {
+      --preview-scale: 0.8;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: calc(100% / var(--preview-scale));
+      height: calc(100% / var(--preview-scale));
+      border: 0;
+      background: #ffffff;
+      transform: scale(var(--preview-scale));
+      transform-origin: left top;
+    }
+
+    .preview-shell {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: 1px solid #d0d7de;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #ffffff;
+    }
+
+    .preview-placeholder {
+      position: absolute;
+      inset: 0;
+      background: #f6f8fa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      color: #656d76;
+    }
+
+    .load-more-wrap {
+      margin-top: 14px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .load-sentinel {
+      width: 100%;
+      height: 1px;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .open-link {
+      display: inline-block;
+      font-size: 12px;
+      border: 1px solid #d0d7de;
+      border-radius: 6px;
+      padding: 4px 8px;
+      color: #24292f;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .open-link:hover {
+      background: #f3f4f6;
+    }
+
+    .card-title {
+      margin: 0 0 4px;
+      font-size: 15px;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    .card-path {
+      margin: 0;
+      font-size: 12px;
+      color: #656d76;
+      word-break: break-all;
+    }
+
+    .empty,
+    .error {
+      border: 1px dashed #d0d7de;
+      border-radius: 10px;
+      background: #ffffff;
+      padding: 20px;
+      color: #656d76;
+      margin-top: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1 class="title">效果合集</h1>
+      <div class="toolbar">
+        <input id="searchInput" type="search" placeholder="搜索编号或标题" />
+        <button id="refreshButton" type="button">刷新</button>
+      </div>
+    </div>
+    <p id="meta" class="meta">加载中...</p>
+    <div id="app"></div>
+  </div>
+
+  <script>
+    const app = document.getElementById("app");
+    const meta = document.getElementById("meta");
+    const searchInput = document.getElementById("searchInput");
+    const refreshButton = document.getElementById("refreshButton");
+
+    let cache = [];
+    let filteredCache = [];
+    let renderedCount = 0;
+    let autoLoadObserver = null;
+    let previewObserver = null;
+    let isAutoLoading = false;
+
+    const PAGE_SIZE = 24;
+    const AUTO_PREVIEW_COUNT = 8;
+
+    async function loadManifest() {
+      meta.textContent = "加载中...";
+      try {
+        const response = await fetch(`./manifest.json?t=${Date.now()}`);
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        }
+        const list = await response.json();
+        cache = Array.isArray(list) ? list : [];
+        render(cache, searchInput.value.trim().toLowerCase());
+      } catch (error) {
+        teardownAllObservers();
+        app.innerHTML = '<div class="error">manifest.json 加载失败，请先执行生成脚本。</div>';
+        meta.textContent = "加载失败";
+      }
+    }
+
+    function render(list, keyword) {
+      const filtered = list.filter((item) => {
+        const idText = String(item.id ?? "");
+        const titleText = String(item.title ?? "").toLowerCase();
+        return idText.includes(keyword) || titleText.includes(keyword);
+      }).sort((a, b) => Number(b.id || 0) - Number(a.id || 0));
+
+      if (filtered.length === 0) {
+        teardownAllObservers();
+        app.innerHTML = '<div class="empty">没有匹配结果</div>';
+        meta.textContent = `共 0 个结果`;
+        return;
+      }
+
+      teardownAllObservers();
+
+      filteredCache = filtered;
+      renderedCount = 0;
+
+      app.innerHTML = `
+        <div id="cards" class="cards"></div>
+        <div class="load-more-wrap">
+          <button id="loadMoreButton" type="button">加载更多</button>
+        </div>
+        <div id="loadMoreSentinel" class="load-sentinel"></div>
+      `;
+
+      renderNextPage();
+      setupAutoLoad();
+      setupPreviewAutoLoad();
+      meta.textContent = `共 ${filtered.length} 个结果（总计 ${list.length} 个）`;
+    }
+
+    function teardownListAutoLoad() {
+      if (autoLoadObserver) {
+        autoLoadObserver.disconnect();
+        autoLoadObserver = null;
+      }
+
+      isAutoLoading = false;
+    }
+
+    function teardownPreviewAutoLoad() {
+      if (previewObserver) {
+        previewObserver.disconnect();
+        previewObserver = null;
+      }
+    }
+
+    function teardownAllObservers() {
+      teardownListAutoLoad();
+      teardownPreviewAutoLoad();
+    }
+
+    function setupAutoLoad() {
+      teardownListAutoLoad();
+
+      const sentinel = document.getElementById("loadMoreSentinel");
+      if (!sentinel || !("IntersectionObserver" in window)) {
+        return;
+      }
+
+      autoLoadObserver = new IntersectionObserver(
+        (entries) => {
+          const entry = entries[0];
+          if (!entry || !entry.isIntersecting) {
+            return;
+          }
+
+          if (isAutoLoading || renderedCount >= filteredCache.length) {
+            return;
+          }
+
+          isAutoLoading = true;
+          renderNextPage();
+          isAutoLoading = false;
+        },
+        { rootMargin: "600px 0px" }
+      );
+
+      autoLoadObserver.observe(sentinel);
+    }
+
+    function setupPreviewAutoLoad() {
+      if (!("IntersectionObserver" in window)) {
+        const placeholders = document.querySelectorAll(".preview-placeholder[data-path]");
+        placeholders.forEach((placeholder) => loadPreviewFromPlaceholder(placeholder));
+        return;
+      }
+
+      previewObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) {
+              return;
+            }
+            loadPreviewFromPlaceholder(entry.target);
+            if (previewObserver) {
+              previewObserver.unobserve(entry.target);
+            }
+          });
+        },
+        { rootMargin: "300px 0px" }
+      );
+
+      observeNewLazyPreviews();
+    }
+
+    function loadPreviewFromPlaceholder(target) {
+      if (!(target instanceof HTMLElement)) {
+        return;
+      }
+
+      const src = target.dataset.path;
+      if (!src) {
+        return;
+      }
+
+      const frame = target.nextElementSibling;
+      if (!(frame instanceof HTMLIFrameElement)) {
+        return;
+      }
+
+      frame.src = src;
+      frame.style.display = "block";
+      frame.classList.remove("preview-lazy");
+      delete target.dataset.path;
+      target.remove();
+    }
+
+    function observeNewLazyPreviews(scope = document) {
+      if (!previewObserver) {
+        return;
+      }
+
+      const placeholders = scope.querySelectorAll(".preview-placeholder[data-path]");
+      placeholders.forEach((placeholder) => previewObserver.observe(placeholder));
+    }
+
+    function buildCard(item, shouldAutoPreview) {
+      const safeTitle = item.title || `效果 ${item.id}`;
+
+      if (!shouldAutoPreview) {
+        const previewPlaceholder = `<div class="preview-placeholder" data-path="./${item.path}">
+            滚动到此区域自动加载预览
+          </div>`;
+        return `
+          <article class="card">
+            <h3 class="card-title">#${item.id} ${safeTitle}</h3>
+            <div class="preview-shell">
+              ${previewPlaceholder}
+              <iframe
+                class="preview preview-lazy"
+                title="#${item.id} ${safeTitle}"
+                scrolling="no"
+                loading="lazy"
+                referrerpolicy="no-referrer"
+                style="display:none"
+              ></iframe>
+            </div>
+            <div class="card-footer">
+              <p class="card-path">${item.path}</p>
+              <a class="open-link" href="./${item.path}" target="_blank" rel="noreferrer">新窗口打开</a>
+            </div>
+          </article>
+        `;
+      }
+
+      const previewHtml = `<iframe
+            class="preview"
+            src="./${item.path}"
+            title="#${item.id} ${safeTitle}"
+        scrolling="no"
+            loading="lazy"
+            referrerpolicy="no-referrer"
+          ></iframe>`;
+
+      return `
+        <article class="card">
+          <h3 class="card-title">#${item.id} ${safeTitle}</h3>
+          <div class="preview-shell">${previewHtml}</div>
+          <div class="card-footer">
+            <p class="card-path">${item.path}</p>
+            <a class="open-link" href="./${item.path}" target="_blank" rel="noreferrer">新窗口打开</a>
+          </div>
+        </article>
+      `;
+    }
+
+    function renderNextPage() {
+      const cardsRoot = document.getElementById("cards");
+      const loadMoreButton = document.getElementById("loadMoreButton");
+      if (!cardsRoot || !loadMoreButton) {
+        return;
+      }
+
+      const end = Math.min(renderedCount + PAGE_SIZE, filteredCache.length);
+      const chunk = filteredCache.slice(renderedCount, end);
+      const cards = chunk
+        .map((item, index) => {
+          const absoluteIndex = renderedCount + index;
+          return buildCard(item, absoluteIndex < AUTO_PREVIEW_COUNT);
+        })
+        .join("");
+
+      cardsRoot.insertAdjacentHTML("beforeend", cards);
+      observeNewLazyPreviews(cardsRoot);
+      renderedCount = end;
+
+      if (renderedCount >= filteredCache.length) {
+        loadMoreButton.style.display = "none";
+        teardownListAutoLoad();
+      } else {
+        loadMoreButton.style.display = "inline-block";
+        loadMoreButton.textContent = `加载更多（剩余 ${filteredCache.length - renderedCount}）`;
+      }
+    }
+
+    app.addEventListener("click", (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLElement)) {
+        return;
+      }
+
+      if (target.id === "loadMoreButton") {
+        renderNextPage();
+      }
+    });
+
+    searchInput.addEventListener("input", () => {
+      render(cache, searchInput.value.trim().toLowerCase());
+    });
+
+    refreshButton.addEventListener("click", loadManifest);
+    loadManifest();
+  </script>
+</body>
+</html>

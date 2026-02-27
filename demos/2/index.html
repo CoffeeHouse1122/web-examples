@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>图片对比滑块</title>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+      }
+
+      body {
+        display: flex;
+        justify-content: center;
+        background-image: url(./03.png);
+        background-size: cover;
+      }
+
+      .compare {
+        display: grid;
+      }
+
+      .compare * {
+        /* 网格区域设置为 1/1 */
+        width: 500px;
+        grid-area: 1 / 1;
+      }
+
+      .compare section {
+        /* 网格居中 */
+        display: grid;
+        place-content: center;
+      }
+
+      .before {
+        clip-path: inset(0 calc(100% - var(--pos, 50%)) 0 0);
+      }
+
+      .after {
+        clip-path: inset(0 0 0 var(--pos, 50%));
+      }
+
+      #range {
+        z-index: 1;
+        appearance: none;
+        background: transparent;
+        cursor: pointer;
+      }
+
+      #range::-webkit-slider-thumb {
+        appearance: none;
+        width: 10px;
+        height: 100vh;
+        background-image: linear-gradient(
+          to bottom,
+          #91defe,
+          #99c0f9,
+          #bdb6ec,
+          #d7b3e3,
+          #efb3d5,
+          #f9bccc
+        );
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="compare">
+      <section class="before">
+        <img src="./01.png" alt="" />
+      </section>
+      <section class="after">
+        <img src="./02.png" alt="" />
+      </section>
+      <input type="range" id="range" />
+    </div>
+  </body>
+  <script>
+    const range = document.querySelector("input");
+    range.oninput = function () {
+      // 变量 --pos 的值为 range 的值
+      document.body.style.setProperty("--pos", range.value + "%");
+    };
+  </script>
+</html>

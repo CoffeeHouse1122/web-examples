@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>形变确认按钮</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 25% 15%, #243b7a 0%, #17234a 42%, #10172f 100%);
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    }
+
+    .confirm {
+      position: relative;
+      width: 200px;
+      height: 56px;
+      border: 0;
+      border-radius: 14px;
+      color: #e0f2fe;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      overflow: hidden;
+      background: linear-gradient(145deg, #38bdf8, #6366f1);
+      box-shadow: 0 14px 28px rgba(56, 189, 248, 0.32);
+      transition: width 0.28s ease, border-radius 0.28s ease, transform 0.16s ease;
+    }
+
+    .confirm:hover {
+      transform: translateY(-1px);
+    }
+
+    .confirm:active {
+      transform: scale(0.98);
+    }
+
+    .label,
+    .icon {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      transition: opacity 0.2s ease, transform 0.25s ease;
+      pointer-events: none;
+    }
+
+    .icon {
+      font-size: 24px;
+      opacity: 0;
+      transform: scale(0.6);
+    }
+
+    .confirm.done {
+      width: 56px;
+      border-radius: 50%;
+      box-shadow: 0 14px 30px rgba(16, 185, 129, 0.36);
+      background: linear-gradient(145deg, #34d399, #10b981);
+    }
+
+    .confirm.done .label {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+
+    .confirm.done .icon {
+      opacity: 1;
+      transform: scale(1);
+    }
+  </style>
+</head>
+<body>
+  <button class="confirm" id="confirmBtn" aria-label="confirm">
+    <span class="label">CONFIRM</span>
+    <span class="icon">✓</span>
+  </button>
+
+  <script>
+    const confirmBtn = document.getElementById("confirmBtn");
+    let locked = false;
+
+    confirmBtn.addEventListener("click", () => {
+      if (locked) {
+        return;
+      }
+
+      locked = true;
+      confirmBtn.classList.add("done");
+
+      setTimeout(() => {
+        confirmBtn.classList.remove("done");
+        locked = false;
+      }, 1400);
+    });
+  </script>
+</body>
+</html>

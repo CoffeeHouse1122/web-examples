@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>摊牌动画</title>
+  <style>
+    /* 全局样式重置：统一盒模型为border-box，并清除默认的margin和padding */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      display: flex;
+      min-height: 100vh;
+      align-items: center;
+      justify-content: center;
+      background-color: #17171c;
+    }
+
+    /* 手牌容器.hand的样式定义：
+      使用inline-grid实现横向排列的卡片布局
+      初始状态下每列宽度为0，gap也为0，使卡片不可见
+      添加过渡动画，使展开过程更平滑 */
+    .hand {
+      display: inline-grid;
+      grid-template-columns: repeat(5, 0);
+      gap: 0;
+      transition: 200ms ease-out;
+    }
+
+    /* 鼠标悬停手牌时：
+      展开每张卡片，设置每列为固定宽度并增加间距
+      同时触发动画，使卡片旋转至正面朝向用户 */
+    .hand:hover {
+      grid-template-columns: repeat(5, 16vmin);
+      gap: 1.5vmin;
+    }
+
+    .hand:hover .card::before {
+      transform: translate(-50%, -50%) rotate(0);
+    }
+
+    /* 卡片基础定位样式：相对定位 */
+    .card {
+      position: relative;
+    }
+
+    /* 卡片外观通过为元素::before绘制
+      定位到父元素中心点
+      设置尺寸、边框、圆角等样式
+      使用CSS变量--i控制初始旋转角度，形成扇形展开效果
+      添加过渡动画实现交互反馈
+      背景图由nth-child选择器单独指定 */
+    .card::before {
+      top: 50%;
+      left: 50%;
+      width: 16vmin;
+      height: 28vmin;
+      transform-origin: 50% 100%;
+      transform: translate(-50%, -50%) rotate(calc((var(--i) * 15deg) - 30deg));
+      position: absolute;
+      content: "";
+      border-radius: 1vmin;
+      border: 1px solid #e3e3e8;
+      padding: 0.5vmin;
+      background-color: #17171c;
+      transition: 200ms ease-out;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+    }
+
+    /* 为每张卡牌设置不同的背景图片 */
+    .card:nth-child(1)::before {
+      background-image: url(./01.png);
+    }
+
+    .card:nth-child(2)::before {
+      background-image: url(./01.png);
+    }
+
+    .card:nth-child(3)::before {
+      background-image: url(./01.png);
+    }
+
+    .card:nth-child(4)::before {
+      background-image: url(./01.png);
+    }
+
+    .card:nth-child(5)::before {
+      background-image: url(./01.png);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="hand">
+    <div class="card" style="--i:0;"></div>
+    <div class="card" style="--i:1;"></div>
+    <div class="card" style="--i:2;"></div>
+    <div class="card" style="--i:3;"></div>
+    <div class="card" style="--i:4;"></div>
+  </div>
+</body>
+
+</html>

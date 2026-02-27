@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SVG：path轨迹运动（GSAP）</title>
+  </head>
+  <body>
+    <div class="demo demo6">
+      <h5>SVG：path轨迹运动（GSAP）</h5>
+      <!-- 飞机 -->
+      <svg
+        id="airplane"
+        width="32"
+        height="32"
+        class="icon"
+        viewBox="0 0 1024 1024"
+        version="1.1"
+        xmlns="http://www.w3.org/2000/svg"
+        p-id="3908"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+      >
+        <path
+          d="M1009.19461 5.118447a32.054274 32.054274 0 0 0-35.125341 0.255922l-959.708789 639.805859a31.830341 31.830341 0 0 0-14.043738 29.942914 31.830341 31.830341 0 0 0 19.929952 26.360002l250.292052 100.161607 117.692288 205.953506a31.990293 31.990293 0 0 0 27.415681 16.123108H415.998608c11.228593 0 21.657428-5.950194 27.415681-15.547283l66.443839-110.782384 310.14589 124.026365a31.734371 31.734371 0 0 0 27.543642-1.855437c8.445437-4.734563 14.23568-13.05204 15.867185-22.617137l159.951465-959.708788A32.054274 32.054274 0 0 0 1009.19461 5.118447zM100.446359 664.662317L841.821398 170.3803 302.784962 747.389214c-2.847136-1.695486-5.374369-3.934806-8.509418-5.182427l-193.829185-77.54447z m225.627536 105.216073l-0.223932-0.319903L931.842082 120.955298 415.230841 925.895049l-89.156946-156.016659z m480.750122 177.322194l-273.229092-109.278841a63.564712 63.564712 0 0 0-19.929952-3.806845L934.401305 181.896806l-127.577288 765.303778z"
+          fill="#333333"
+          p-id="3909"
+        ></path>
+      </svg>
+      <!-- 运行的轨迹 -->
+      <svg
+        width="481px"
+        height="400px"
+        viewBox="0 0 481 474"
+        version="1.1"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+      >
+        <g
+          id="页面-1"
+          stroke="none"
+          stroke-width="0"
+          fill="none"
+          fill-rule="evenodd"
+        >
+          <path
+            id="airplane-path"
+            d="M0.650866946,473.296875 C9.94351815,378.307292 64.0286458,312.061198 162.90625,274.558594 C205.039435,258.578189 296.032367,243.501651 389.742188,185.972656 C427.061784,163.061943 457.245378,101.237724 480.292969,0.5"
+            stroke="#979797"
+          ></path>
+        </g>
+      </svg>
+      <br />
+      <button id="demo6_reset">重置</button>
+      <button id="demo6_start">开始</button>
+      <button id="demo6_path">显示路径</button>
+    </div>
+    <script src="./gsap.min.js"></script>
+    <script src="./MotionPathPlugin.min.js"></script>
+    <script>
+      // SVG:path轨迹运动
+      // 使用 MotionPathPlugin 插件
+      gsap.registerPlugin(MotionPathPlugin);
+
+      document.querySelector("#demo6_reset").onclick = function () {
+        gsap.set("#airplane", {
+          x: 0,
+          y: 0,
+          rotate: 0,
+        });
+      };
+
+      document.querySelector("#demo6_start").onclick = function () {
+        gsap.to("#airplane", {
+          // 要运动的元素
+          duration: 3, // 时间
+          // repeat: -1, // 循环（1、2、3、4 为循环次数，-1为无限循环）
+          ease: "Linear.easeNone", // 运动曲线
+          motionPath: {
+            path: "#airplane-path", // 运动的轨迹
+            align: "#airplane-path",
+            autoRotate: 60, // 飞机运动旋转角度 （true为自动调整角度）
+            alignOrigin: [1, 1], // 飞机的运动原点
+          },
+        });
+      };
+
+      document.querySelector("#demo6_path").onclick = function () {
+        document.querySelector("#demo6_path").classList.toggle("cur");
+        document
+          .querySelector("#页面-1")
+          .setAttribute(
+            "stroke-width",
+            document.querySelector("#demo6_path").classList.contains("cur")
+              ? "1"
+              : "0"
+          );
+        document.querySelector("#demo6_path").textContent = document
+          .querySelector("#demo6_path")
+          .classList.contains("cur")
+          ? "隐藏路径"
+          : "显示路径";
+      };
+    </script>
+  </body>
+</html>

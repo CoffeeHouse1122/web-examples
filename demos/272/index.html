@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>速度可控的打字机效果</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
+      color: #fff;
+      font-family: 'Courier New', Courier, monospace;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      text-align: center;
+      padding: 2rem;
+      max-width: 800px;
+    }
+
+    h1 {
+      font-size: 2.4rem;
+      margin-bottom: 2rem;
+      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+    }
+
+    .typewriter {
+      font-size: 2rem;
+      line-height: 1.4;
+      margin: 1rem auto;
+      min-height: 3em;
+    }
+
+    /* 光标样式 */
+    .cursor {
+      display: inline-block;
+      width: 2px;
+      height: 2.2rem;
+      background: #fff;
+      vertical-align: middle;
+      margin-left: 4px;
+      animation: blink 1s infinite;
+    }
+
+    /* 光标动画 */
+    @keyframes blink {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0;
+      }
+    }
+
+    .controls {
+      margin-top: 2rem;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .controls .btn {
+      padding: 10px 20px;
+      background: rgba(255, 255, 255, 0.15);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.3s;
+    }
+
+    .controls .btn:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .speed-display {
+      font-size: 1.1rem;
+      opacity: 0.9;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>打字机效果演示</h1>
+    <div class="typewriter" id="typewriter">
+    </div>
+    <div class="speed-display" id="speedDisplay">打字速度：100ms/字</div>
+    <div class="controls">
+      <button class="btn" id="startBtn">开始</button>
+      <button class="btn" id="pauseBtn">暂停</button>
+      <button class="btn" id="resetBtn">重置</button>
+      <button class="btn" id="fasterBtn">加快</button>
+      <button class="btn" id="slowerBtn">减慢</button>
+    </div>
+  </div>
+  <script>
+    // 配置打字文本
+    const texts = [
+      "欢迎来到前端世界！",
+      "HTML + CSS + JavaScript = 无限可能",
+      "每天一个小案例，进步看得见💡",
+      "你也可以成为前端高手！"
+    ];
+
+    let currentTextIndex = 0; //当前显示文本在文本数组中的索引位置
+    let currentCharIndex = 0; //当前显示字符在当前文本中的索引位置
+    let isDeleting = false;   //标识当前是否处于删除字符的状态
+    let isPaused = false;     //标识打字机效果是否处于暂停状态
+    let typingSpeed = 100;    //打字速度，单位为毫秒/字符
+    let deletingSpeed = 50;   //删除速度，单位为毫秒/字符
+
+    const typewriterEl = document.getElementById('typewriter');
+    const speedDisplay = document.getElementById('speedDisplay');
+
+    let timeoutId = null;
+
+    // 打字函数
+    function type() {
+      if (isPaused) return;
+
+      const currentText = texts[currentTextIndex];
+
+      if (!isDeleting) {
+        // 打字阶段：逐字显示
+        typewriterEl.textContent = currentText.substring(0, currentCharIndex + 1);
+        currentCharIndex++;
+
+        if (currentCharIndex === currentText.length) {
+          // 打完后停顿，然后开始删除
+          isDeleting = true;
+          timeoutId = setTimeout(type, 1500); //停顿1.5秒
+          return;
+        }
+      } else {
+        // 删除阶段：逐字删除
+        typewriterEl.textContent = currentText.substring(0, currentCharIndex - 1);
+        currentCharIndex--;
+        if (currentCharIndex === 0) {
+          // 删除完毕，切换下一句
+          isDeleting = false;
+          currentTextIndex = (currentTextIndex + 1) % texts.length;
+        }
+      }
+      // 计算下一次延迟
+      const delay = isDeleting ? deletingSpeed : typingSpeed;
+      timeoutId = setTimeout(type, delay);
+    }
+
+    // 控制函数
+    // 开始打字
+    function startTyping() {
+      if (timeoutId || isPaused) {
+        isPaused = false;
+        if (!timeoutId) type(); //如果被暂停过，重新启动
+      } else {
+        type();
+      }
+    }
+
+    // 暂停打字
+    function pauseTyping() {
+      isPaused = true;
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+        timeoutId = null;
+      }
+    }
+
+    // 重置打字
+    function resetTyping() {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+        timeoutId = null;
+      }
+      isPaused = false;
+      isDeleting = false;
+      currentTextIndex = 0;
+      currentCharIndex = 0;
+      typewriterEl.textContent = '';
+      startTyping();
+    }
+
+    // 调整打字速度
+    function adjustSpeed(delta) {
+      typingSpeed = Math.max(20, Math.min(300, typingSpeed + delta));
+      speedDisplay.textContent = `打字速度：${typingSpeed}ms/字`;
+    }
+
+    // 绑定按钮事件
+    document.getElementById('startBtn').addEventListener('click', startTyping);
+    document.getElementById('pauseBtn').addEventListener('click', pauseTyping);
+    document.getElementById('resetBtn').addEventListener('click', resetTyping);
+    document.getElementById('fasterBtn').addEventListener('click', () => adjustSpeed(-20));
+    document.getElementById('slowerBtn').addEventListener('click', () => adjustSpeed(20));
+
+    // 页面加载时自动开始
+    window.addEventListener('load', () => {
+      startTyping();
+    });
+
+    // 添加光标（用JS动态插入，避免初始显示）
+    const observer = new MutationObserver(() => {
+      // 确保光标始终在最后
+      if (!document.querySelector('.cursor')) {
+        const cursor = document.createElement('span');
+        cursor.className = 'cursor';
+        typewriterEl.appendChild(cursor);
+      }
+    });
+    // 启动MutationObserver观察器，用于监听打字机元素的DOM变化，包括子元素的添加、删除等操作
+    observer.observe(typewriterEl, { childList: true, subtree: true });
+  </script>
+</body>
+
+</html>
