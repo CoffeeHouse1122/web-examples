@@ -32,6 +32,9 @@ node .\tools\generate-manifest.mjs
 
 ---
 
+## 效果参考网站
+- https://codepen.io/trending
+
 ## 页面案例集合
 
 1. CSS高级动效
